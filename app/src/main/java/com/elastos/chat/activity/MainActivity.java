@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity {
 
                         //更新UI
                         HomeFragment homeFragment = (HomeFragment)mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.HOME);
-                        homeFragment.updateInfo(carrierAddr, carrierUserId);
+                        homeFragment.updateInfo(carrierAddr, carrierUserId,carrierInst);
                     } catch (ElastosException e) {
                         txtInitProgress.setText("连接失败 ");
                         e.printStackTrace();
@@ -147,6 +147,8 @@ public class MainActivity extends BaseActivity {
         //2.2 通过好友验证
         public void onFriendRequest(Carrier carrier, String userId, UserInfo info, String hello) {
             try {
+
+                Log.v("","接收到"+userId+"发来的好友申请，内容 "+hello);
                 if (hello.equals("auto-accepted")) {
                     carrier.AcceptFriend(userId);
                 }
