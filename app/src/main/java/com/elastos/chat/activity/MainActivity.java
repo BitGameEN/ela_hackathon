@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.elastos.chat.R;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
-import com.elastos.chat.ui.BaseActivity;
 import com.elastos.helper.Synchronizer;
 import com.elastos.helper.TestOptions;
 

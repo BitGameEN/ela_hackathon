@@ -1,4 +1,4 @@
-package com.elastos.chat.ui;
+package com.elastos.chat.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
