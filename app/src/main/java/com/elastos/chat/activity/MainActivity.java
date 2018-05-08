@@ -1,23 +1,23 @@
-package com.elastos.chat;
+package com.elastos.chat.activity;
 
-import com.elastos.helper.Synchronizer;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.widget.TextView;
 
-import com.elastos.chat.ui.BaseActivity;
+import com.elastos.chat.R;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
+import com.elastos.chat.ui.BaseActivity;
+import com.elastos.helper.Synchronizer;
+import com.elastos.helper.TestOptions;
 
 import org.elastos.carrier.AbstractCarrierHandler;
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.ConnectionStatus;
 import org.elastos.carrier.UserInfo;
 import org.elastos.carrier.exceptions.ElastosException;
-
-import com.elastos.helper.TestOptions;
-import android.util.Log;
-import android.widget.TextView;
 
 import java.io.File;
 
