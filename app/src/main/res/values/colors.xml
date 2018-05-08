@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#ffffff</color>
+    <color name="azure">#00a5ff</color>
+    <color name="cool_grey">#98a6a6</color>
+
+
+    <color name="tab_selected_text_color">@color/azure</color>
+    <color name="tab_text_color">@color/cool_grey</color>
+
+
 </resources>
