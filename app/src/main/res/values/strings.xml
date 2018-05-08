@@ -3,4 +3,6 @@
 
     <string name="home">主页</string>
     <string name="friends">好友列表</string>
+    <string name="me">我</string>
+    <string name="my_qr_code">我的二维码</string>
 </resources>

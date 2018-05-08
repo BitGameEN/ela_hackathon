@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProfileItemView">
+        <attr name="iconRes" format="reference"/>
+        <attr name="name" format="string"/>
+        <attr name="showLine" format="boolean"/>
+        <attr name="desc" format="string"/>
+    </declare-styleable>
+</resources>

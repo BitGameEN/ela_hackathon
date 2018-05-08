@@ -5,18 +5,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.elastos.chat.R;
-import com.elastos.chat.ui.HomeFragment;
 import com.elastos.chat.ui.FriendsFragment;
+import com.elastos.chat.ui.HomeFragment;
+import com.elastos.chat.ui.MeFragment;
 
 /**
  * @author rczhang on 2018/05/08.
  */
 public class MainFragmentPagerAdapter extends BaseFragmentPagerAdapter {
 
-    private final static int COUNT = 2;
+    private final static int COUNT = 3;
 
     public final static int HOME = 0;
     public final static int FRIENDS = 1;
+    public final static int ME = 2;
 
     private Context context;
 
@@ -42,6 +44,9 @@ public class MainFragmentPagerAdapter extends BaseFragmentPagerAdapter {
             case FRIENDS:
                 mFragments[position] = FriendsFragment.newInstance();
                 break;
+            case ME:
+                mFragments[position] = MeFragment.newInstance();
+                break;
             default:
                 break;
         }
@@ -57,8 +62,10 @@ public class MainFragmentPagerAdapter extends BaseFragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
             return context.getString(R.string.home);
-        } else {
+        } else if (position == 1) {
             return context.getString(R.string.friends);
+        } else {
+            return context.getString(R.string.me);
         }
     }
 }

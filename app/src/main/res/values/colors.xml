@@ -11,12 +11,15 @@
     <color name="black_alpha_10">#19000000</color>
     <color name="black_alpha_87">#de000000</color>
 
+    <color name="black">#000000</color>
     <color name="azure">#00a5ff</color>
     <color name="cool_grey">#98a6a6</color>
     <color name="warm_grey">#999999</color>
     <color name="pale_grey">#f0eff5</color>
+    <color name="silver_three">#d9d9d9</color>
 
     <color name="divider_alpha">@color/black_alpha_10</color>
+    <color name="pressed">@color/silver_three</color>
 
     <color name="tab_selected_text_color">@color/azure</color>
     <color name="tab_text_color">@color/cool_grey</color>
