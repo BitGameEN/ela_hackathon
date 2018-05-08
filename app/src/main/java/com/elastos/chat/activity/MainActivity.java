@@ -89,22 +89,20 @@ public class MainActivity extends BaseActivity {
 
                         //1.2获得Carrier的地址
                         carrierAddr = carrierInst.getAddress();
-                        txtInitProgress.setText("address: " + carrierAddr);
                         Log.i(TAG,"address: " + carrierAddr);
 
                         //1.3获得Carrier的用户ID
                         carrierUserID = carrierInst.getUserId();
-                        txtInitProgress.setText("user_id: " + carrierUserID);
                         Log.i(TAG,"user_id: " + carrierUserID);
 
                         //1.4启动网络
                         txtInitProgress.setText("connecting to carrier....");
                         carrierInst.start(1000);
                         handler.synch.await();
-                        txtInitProgress.setText("carrier client is ready now");
+                        txtInitProgress.setText("carrier connected");
                         Log.i(TAG,"carrier client is ready now");
                     } catch (ElastosException e) {
-                        txtInitProgress.setText("carrier client connect failed");
+                        txtInitProgress.setText("carrier connect failed");
                         e.printStackTrace();
                     }
                     break;
