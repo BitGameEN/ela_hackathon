@@ -2,13 +2,12 @@ package com.elastos.chat;
 
 import com.elastos.helper.Synchronizer;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.elastos.chat.ui.BaseActivity;
-import com.elastos.chat.ui.MainFragmentPagerAdapter;
+import com.elastos.chat.adapter.MainFragmentPagerAdapter;
 
 import org.elastos.carrier.AbstractCarrierHandler;
 import org.elastos.carrier.Carrier;
