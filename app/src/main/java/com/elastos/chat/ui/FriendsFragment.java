@@ -11,10 +11,10 @@ import com.elastos.chat.R;
 /**
  * @author rczhang on 2018/05/08.
  */
-public class MeFragment extends BaseFragment {
+public class FriendsFragment extends BaseFragment {
 
-    public static MeFragment newInstance() {
-        MeFragment meFragment = new MeFragment();
+    public static FriendsFragment newInstance() {
+        FriendsFragment meFragment = new FriendsFragment();
         return meFragment;
     }
 

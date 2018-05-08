@@ -96,13 +96,13 @@ public class MainActivity extends BaseActivity {
                         Log.i(TAG,"user_id: " + carrierUserID);
 
                         //1.4启动网络
-                        txtInitProgress.setText("connecting to carrier....");
+                        txtInitProgress.setText("连接中.... ");
                         carrierInst.start(1000);
                         handler.synch.await();
-                        txtInitProgress.setText("carrier connected");
+                        txtInitProgress.setText("已连接 ");
                         Log.i(TAG,"carrier client is ready now");
                     } catch (ElastosException e) {
-                        txtInitProgress.setText("carrier connect failed");
+                        txtInitProgress.setText("连接失败 ");
                         e.printStackTrace();
                     }
                     break;
