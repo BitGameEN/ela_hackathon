@@ -14,7 +14,10 @@ import com.elastos.chat.R;
 import com.elastos.chat.activity.MainActivity;
 
 import org.elastos.carrier.Carrier;
+import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
+
+import java.util.List;
 
 /**
  * @author rczhang on 2018/05/08.
@@ -23,9 +26,13 @@ public class HomeFragment extends BaseFragment {
 
     private TextView txtAddress;
     private TextView txtUserId;
+    private TextView txtFriendinfo;
     private MainActivity activity;
     private Button butAddFriend;
+    private Button butGetFriend;
+    private Button butDelFriend;
     private EditText etFriendAddress;
+    private EditText etDelFriendUid;
     Carrier carrierInst = null;
 
     public static HomeFragment newInstance() {
@@ -55,6 +62,40 @@ public class HomeFragment extends BaseFragment {
                     } catch (ElastosException e) {
                         e.printStackTrace();
                     }
+                }
+            }
+        });
+        txtFriendinfo = view.findViewById(R.id.home_friend_user_id);
+        butGetFriend = view.findViewById(R.id.home_but_get_friend);
+        butGetFriend.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                try {
+                    List<FriendInfo> friendInfos = carrierInst.getFriends();
+                    if(friendInfos.size()>0) {
+                        for (FriendInfo fi:friendInfos) {
+                            Log.v("", fi.getUserId());
+                            txtFriendinfo.setText(txtFriendinfo.getText()+"|"+fi.getUserId());
+                        }
+                    }
+                } catch (ElastosException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        etDelFriendUid=view.findViewById(R.id.home_et_friend_del_address);
+        butDelFriend = view.findViewById(R.id.home_et_friend_del_uid);
+        butDelFriend.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                try {
+                    carrierInst.removeFriend(etDelFriendUid.getText().toString());
+                } catch (ElastosException e) {
+                    e.printStackTrace();
                 }
             }
         });

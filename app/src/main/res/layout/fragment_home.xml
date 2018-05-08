@@ -16,6 +16,7 @@
             android:id="@+id/home_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:text=""/>
     </LinearLayout>
 
@@ -31,6 +32,7 @@
             android:id="@+id/home_user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:text=""/>
     </LinearLayout>
 
@@ -53,5 +55,40 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="添加好友" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/home_but_get_friend"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="获取好友" />
+
+    <TextView
+        android:id="@+id/home_friend_user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:text=""/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/home_et_friend_del_address"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="del friend uid" />
+
+        <Button
+            android:id="@+id/home_et_friend_del_uid"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="删除好友" />
     </LinearLayout>
 </LinearLayout>
