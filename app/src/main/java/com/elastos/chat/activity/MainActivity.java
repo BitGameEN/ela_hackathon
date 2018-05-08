@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.elastos.chat.R;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
+import com.elastos.chat.ui.HomeFragment;
 import com.elastos.helper.Synchronizer;
 import com.elastos.helper.TestOptions;
 
@@ -33,7 +34,7 @@ public class MainActivity extends BaseActivity {
 
     Carrier carrierInst = null;
     String carrierAddr = null;
-    String carrierUserID = null;
+    String carrierUserId = null;
     String TAG = "DemoTag";
 
     private static final int DELAY = 1000;
@@ -92,8 +93,8 @@ public class MainActivity extends BaseActivity {
                         Log.i(TAG,"address: " + carrierAddr);
 
                         //1.3获得Carrier的用户ID
-                        carrierUserID = carrierInst.getUserId();
-                        Log.i(TAG,"user_id: " + carrierUserID);
+                        carrierUserId = carrierInst.getUserId();
+                        Log.i(TAG,"user_id: " + carrierUserId);
 
                         //1.4启动网络
                         txtInitProgress.setText("连接中.... ");
@@ -101,6 +102,10 @@ public class MainActivity extends BaseActivity {
                         handler.synch.await();
                         txtInitProgress.setText("已连接 ");
                         Log.i(TAG,"carrier client is ready now");
+
+                        //更新UI
+                        HomeFragment homeFragment = (HomeFragment)mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.HOME);
+                        homeFragment.updateInfo(carrierAddr, carrierUserId);
                     } catch (ElastosException e) {
                         txtInitProgress.setText("连接失败 ");
                         e.printStackTrace();

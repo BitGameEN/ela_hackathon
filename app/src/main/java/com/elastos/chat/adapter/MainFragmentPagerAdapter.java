@@ -15,8 +15,8 @@ public class MainFragmentPagerAdapter extends BaseFragmentPagerAdapter {
 
     private final static int COUNT = 2;
 
-    private final static int HOME = 0;
-    private final static int FRIENDS = 1;
+    public final static int HOME = 0;
+    public final static int FRIENDS = 1;
 
     private Context context;
 
