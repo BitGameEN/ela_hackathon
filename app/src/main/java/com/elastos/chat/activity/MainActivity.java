@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
 
     private MainFragmentPagerAdapter mainFragmentPagerAdapter;
 
-    Carrier carrierInst = null;
+    public Carrier carrierInst = null;
     String carrierAddr = null;
     String carrierUserId = null;
     String TAG = "DemoTag";

@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Fragment基类
  *
@@ -23,6 +26,8 @@ public class BaseFragment extends Fragment {
     public boolean isStarted() {
         return isStarted;
     }
+
+    private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -48,12 +53,14 @@ public class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        unbinder = ButterKnife.bind(this, view);
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
