@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
     String carrierUserID = null;
     String TAG = "DemoTag";
 
-    private static final int DELAY = 2000;
+    private static final int DELAY = 1000;
     private static final int INIT_CARRIER = 0;
 
     private TextView txtInitProgress;
@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        initViews(savedInstanceState);
 
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
 
