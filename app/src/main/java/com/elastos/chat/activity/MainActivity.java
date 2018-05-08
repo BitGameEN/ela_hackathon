@@ -2,6 +2,8 @@ package com.elastos.chat.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -34,6 +36,9 @@ public class MainActivity extends BaseActivity {
     String carrierUserID = null;
     String TAG = "DemoTag";
 
+    private static final int DELAY = 2000;
+    private static final int INIT_CARRIER = 0;
+
     private TextView txtInitProgress;
 
     @Override
@@ -65,39 +70,50 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtInitProgress = findViewById(R.id.init_progress);
-
-        TestOptions options = new TestOptions(getAppPath());
-        TestHandler handler = new TestHandler();
-
-
-        //1.初始化实例，获得相关信息
-        try {
-            //1.1获得Carrier的实例
-            carrierInst = Carrier.getInstance(options, handler);
-
-            //1.2获得Carrier的地址
-            carrierAddr = carrierInst.getAddress();
-            txtInitProgress.setText("address: " + carrierAddr);
-            Log.i(TAG,"address: " + carrierAddr);
-
-            //1.3获得Carrier的用户ID
-            carrierUserID = carrierInst.getUserId();
-            txtInitProgress.setText("user_id: " + carrierUserID);
-            Log.i(TAG,"userID: " + carrierUserID);
-
-            //1.4启动网络
-            txtInitProgress.setText("connecting to carrier....");
-            carrierInst.start(1000);
-            handler.synch.await();
-            txtInitProgress.setText("carrier client is ready now");
-            Log.i(TAG,"carrier client is ready now");
-
-        } catch (ElastosException e) {
-            e.printStackTrace();
-        }
+        msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
 
     }
+
+    Handler msgHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case INIT_CARRIER: {
+                    txtInitProgress = findViewById(R.id.init_progress);
+                    TestOptions options = new TestOptions(getAppPath());
+                    TestHandler handler = new TestHandler();
+                    //1.初始化实例，获得相关信息
+                    try {
+                        //1.1获得Carrier的实例
+                        carrierInst = Carrier.getInstance(options, handler);
+
+                        //1.2获得Carrier的地址
+                        carrierAddr = carrierInst.getAddress();
+                        txtInitProgress.setText("address: " + carrierAddr);
+                        Log.i(TAG,"address: " + carrierAddr);
+
+                        //1.3获得Carrier的用户ID
+                        carrierUserID = carrierInst.getUserId();
+                        txtInitProgress.setText("user_id: " + carrierUserID);
+                        Log.i(TAG,"user_id: " + carrierUserID);
+
+                        //1.4启动网络
+                        txtInitProgress.setText("connecting to carrier....");
+                        carrierInst.start(1000);
+                        handler.synch.await();
+                        txtInitProgress.setText("carrier client is ready now");
+                        Log.i(TAG,"carrier client is ready now");
+                    } catch (ElastosException e) {
+                        txtInitProgress.setText("carrier client connect failed");
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
 
     private String getAppPath() {
 
