@@ -125,6 +125,11 @@ public class MainActivity extends BaseActivity {
         String path=file.getAbsolutePath();
         return path;
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        carrierInst.kill();
+    }
 
     static class TestHandler extends AbstractCarrierHandler {
         Synchronizer synch = new Synchronizer();
