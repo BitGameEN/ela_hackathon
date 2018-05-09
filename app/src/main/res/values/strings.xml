@@ -5,4 +5,7 @@
     <string name="friends">好友列表</string>
     <string name="me">我</string>
     <string name="my_qr_code">我的二维码</string>
+    <string name="nickname">昵称</string>
+    <string name="change_nickname">更改名字</string>
+    <string name="confirm">确定</string>
 </resources>

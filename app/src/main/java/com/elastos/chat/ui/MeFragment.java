@@ -1,5 +1,7 @@
 package com.elastos.chat.ui;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -7,14 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elastos.chat.R;
-import com.elastos.chat.activity.MainActivity;
 import com.elastos.chat.activity.MyQRCodeActivity;
+import com.elastos.chat.activity.NicknameSetActivity;
+import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.ProfileItemView;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.exceptions.ElastosException;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 
 /**
@@ -22,8 +24,12 @@ import butterknife.BindView;
  */
 public class MeFragment extends BaseFragment {
 
+    public static int REQUEST_CODE_SET_NAME = 1;
+
     @BindView(R.id.qr_code)
     ProfileItemView qrCodeItem;
+    @BindView(R.id.nickname)
+    ProfileItemView nickname;
 
     public static MeFragment newInstance() {
         MeFragment meFragment = new MeFragment();
@@ -44,11 +50,35 @@ public class MeFragment extends BaseFragment {
             public void onClick(View v) {
                 try {
                     String address = Carrier.getInstance().getAddress();
-                    MyQRCodeActivity.start(getContext(),address);
+                    MyQRCodeActivity.start(getContext(), address);
                 } catch (ElastosException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    @Override
+    public void onPageFirstStart() {
+        super.onPageFirstStart();
+        try {
+            nickname.setDesc(Carrier.getInstance().getSelfInfo().getName());
+            nickname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(NicknameSetActivity.getStartIntent(getContext(),nickname.getDesc()),REQUEST_CODE_SET_NAME);
+                }
+            });
+        } catch (ElastosException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_SET_NAME) {
+            nickname.setDesc(data.getStringExtra(Extra.NICKNAME));
+        }
     }
 }

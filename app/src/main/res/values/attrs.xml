@@ -9,6 +9,7 @@
 
     <declare-styleable name="AppBar">
         <attr name="title" format="string"/>
+        <attr name="rightText" format="string"/>
     </declare-styleable>
 
 </resources>

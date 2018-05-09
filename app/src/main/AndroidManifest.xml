@@ -30,7 +30,9 @@
         <activity
             android:name=".activity.ScanQRCodeActivity"
             android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".activity.NicknameSetActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

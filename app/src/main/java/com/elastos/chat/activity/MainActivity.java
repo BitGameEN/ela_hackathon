@@ -1,10 +1,8 @@
 package com.elastos.chat.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -47,7 +45,9 @@ public class MainActivity extends BaseActivity {
 
     private TextView txtInitProgress;
 
-    private void MainActivity(){}
+    private void MainActivity() {
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity {
         txtInitProgress = findViewById(R.id.init_progress);
         txtInitProgress.setText("连接中.... ");
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
-
     }
 
     Handler msgHandler = new Handler() {
@@ -97,20 +96,20 @@ public class MainActivity extends BaseActivity {
 
                         //1.2获得Carrier的地址
                         carrierAddr = carrierInst.getAddress();
-                        Log.i(TAG,"address: " + carrierAddr);
+                        Log.i(TAG, "address: " + carrierAddr);
 
                         //1.3获得Carrier的用户ID
                         carrierUserId = carrierInst.getUserId();
-                        Log.i(TAG,"user_id: " + carrierUserId);
+                        Log.i(TAG, "user_id: " + carrierUserId);
 
                         //1.4启动网络
                         carrierInst.start(1000);
                         handler.synch.await();
                         txtInitProgress.setText("已连接 ");
-                        Log.i(TAG,"carrier client is ready now");
+                        Log.i(TAG, "carrier client is ready now");
 
                         //更新UI
-                        HomeFragment homeFragment = (HomeFragment)mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.HOME);
+                        HomeFragment homeFragment = (HomeFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.HOME);
                         homeFragment.updateInfo(carrierAddr, carrierUserId);
                     } catch (ElastosException e) {
                         txtInitProgress.setText("连接失败 ");
@@ -126,11 +125,12 @@ public class MainActivity extends BaseActivity {
 
     private String getAppPath() {
 
-        Context context=this;
-        File file=context.getFilesDir();
-        String path=file.getAbsolutePath();
+        Context context = this;
+        File file = context.getFilesDir();
+        String path = file.getAbsolutePath();
         return path;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -141,23 +141,26 @@ public class MainActivity extends BaseActivity {
         Synchronizer synch = new Synchronizer();
         String from;
         ConnectionStatus friendStatus;
-        String CALLBACK="call back";
+        String CALLBACK = "call back";
         MainActivity mainActivity = null;
 
-        TestHandler(MainActivity mainActivity) {super(); this.mainActivity = mainActivity;}
+        TestHandler(MainActivity mainActivity) {
+            super();
+            this.mainActivity = mainActivity;
+        }
 
         public void onReady(Carrier carrier) {
             synch.wakeup();
         }
 
         public void onFriendConnection(Carrier carrier, String friendId, ConnectionStatus status) {
-            Log.i(CALLBACK,"friendid:" + friendId + "connection changed to: " + status);
+            Log.i(CALLBACK, "friendid:" + friendId + "connection changed to: " + status);
             from = friendId;
             friendStatus = status;
             if (friendStatus == ConnectionStatus.Connected) {
                 synch.wakeup();
                 String msg = mainActivity.get("public_message");
-                if (! msg.trim().isEmpty()){
+                if (!msg.trim().isEmpty()) {
                     try {
                         Carrier.getInstance().sendFriendMessage(friendId, msg);
                     } catch (ElastosException e) {
@@ -171,7 +174,7 @@ public class MainActivity extends BaseActivity {
         public void onFriendRequest(Carrier carrier, String userId, UserInfo info, String hello) {
             try {
 
-                Log.v("","接收到"+userId+"发来的好友申请，内容 "+hello);
+                Log.v("", "接收到" + userId + "发来的好友申请，内容 " + hello);
                 if (hello.equals("auto-accepted")) {
                     carrier.AcceptFriend(userId);
                 }
@@ -182,23 +185,21 @@ public class MainActivity extends BaseActivity {
 
         @Override
         //3.2 接受好友信息
-        public void onFriendMessage(Carrier carrier,String fromId, String message) {
-            Log.i(CALLBACK,"address:" + fromId + "connection changed to: " + message);
-            if(!(friendMessageListener ==null)){
-                friendMessageListener.Message(fromId,message);
+        public void onFriendMessage(Carrier carrier, String fromId, String message) {
+            Log.i(CALLBACK, "address:" + fromId + "connection changed to: " + message);
+            if (!(friendMessageListener == null)) {
+                friendMessageListener.Message(fromId, message);
             }
         }
-
     }
 
     // 定义接口
-    public interface FriendMessage{
-        public void Message(String sFromID,String sMessage);
+    public interface FriendMessage {
+        public void Message(String sFromID, String sMessage);
     }
 
     //用于B绑定接口
     public void setOnFriendMessage(FriendMessage mListener) {
         this.friendMessageListener = mListener;
     }
-
 }

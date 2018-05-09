@@ -16,8 +16,10 @@
     <color name="cool_grey">#98a6a6</color>
     <color name="warm_grey">#999999</color>
     <color name="pale_grey">#f0eff5</color>
+    <color name="silver">#d0d9d9</color>
     <color name="silver_three">#d9d9d9</color>
     <color name="slate_grey">#637070</color>
+    <color name="steel_grey">#7f8a8a</color>
 
     <color name="divider_alpha">@color/black_alpha_10</color>
     <color name="pressed">@color/silver_three</color>

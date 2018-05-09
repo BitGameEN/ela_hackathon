@@ -95,6 +95,10 @@ public class ProfileItemView extends RelativeLayout {
         }
     }
 
+    public String getDesc() {
+        return desc.getText().toString();
+    }
+
     public void showLine(boolean isShow) {
         if (isShow) {
             divider.setVisibility(VISIBLE);

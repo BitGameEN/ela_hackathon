@@ -3,7 +3,6 @@ package com.elastos.chat.ui.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,13 +12,17 @@ import android.widget.TextView;
 
 import com.elastos.chat.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * @author rczhang on 2018/05/08.
  */
 public class AppBar extends RelativeLayout {
 
-    private View back;
-    private TextView title;
+    @BindView(R.id.back) View back;
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.right_text) TextView rightText;
 
     public AppBar(Context context) {
         super(context);
@@ -35,8 +38,7 @@ public class AppBar extends RelativeLayout {
     public void init(final Context context) {
         setClickable(true);
         LayoutInflater.from(context).inflate(R.layout.view_appbar, this);
-        back = findViewById(R.id.back);
-        title = findViewById(R.id.title);
+        ButterKnife.bind(this, this);
         back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +52,9 @@ public class AppBar extends RelativeLayout {
         try {
             String title = a.getString(R.styleable.AppBar_title);
             setTitle(title);
+
+            String rightTextContent = a.getString(R.styleable.AppBar_rightText);
+            setRightText(rightTextContent);
         } finally {
             a.recycle();
         }
@@ -59,5 +64,23 @@ public class AppBar extends RelativeLayout {
         if (titleString != null) {
             title.setText(titleString);
         }
+    }
+
+    public void setRightText(String content) {
+        if (TextUtils.isEmpty(content)) {
+            rightText.setText("");
+            rightText.setVisibility(View.GONE);
+        } else {
+            rightText.setText(content);
+            rightText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setRightTextEnable(boolean isEnable) {
+        rightText.setEnabled(isEnable);
+    }
+
+    public void setRightClickLintener(OnClickListener l) {
+        rightText.setOnClickListener(l);
     }
 }
