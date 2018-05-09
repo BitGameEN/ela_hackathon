@@ -70,7 +70,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews(savedInstanceState);
-
+        txtInitProgress = findViewById(R.id.init_progress);
+        txtInitProgress.setText("连接中.... ");
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
 
     }
@@ -80,7 +81,6 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case INIT_CARRIER: {
-                    txtInitProgress = findViewById(R.id.init_progress);
                     TestOptions options = new TestOptions(getAppPath());
                     TestHandler handler = new TestHandler();
                     //1.初始化实例，获得相关信息
@@ -97,7 +97,6 @@ public class MainActivity extends BaseActivity {
                         Log.i(TAG,"user_id: " + carrierUserId);
 
                         //1.4启动网络
-                        txtInitProgress.setText("连接中.... ");
                         carrierInst.start(1000);
                         handler.synch.await();
                         txtInitProgress.setText("已连接 ");
