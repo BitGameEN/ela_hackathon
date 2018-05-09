@@ -17,7 +17,6 @@ import org.elastos.carrier.Carrier;
 import org.elastos.carrier.UserInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 
 /**
@@ -70,7 +69,7 @@ public class NicknameSetActivity extends BaseActivity {
             }
         });
 
-        appBar.setRightClickLintener(new View.OnClickListener() {
+        appBar.setRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {

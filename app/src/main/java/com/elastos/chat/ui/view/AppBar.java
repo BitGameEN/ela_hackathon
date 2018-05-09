@@ -80,7 +80,7 @@ public class AppBar extends RelativeLayout {
         rightText.setEnabled(isEnable);
     }
 
-    public void setRightClickLintener(OnClickListener l) {
+    public void setRightClickListener(OnClickListener l) {
         rightText.setOnClickListener(l);
     }
 }
