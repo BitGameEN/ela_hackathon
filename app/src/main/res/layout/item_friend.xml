@@ -4,18 +4,22 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/user_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        tools:text="ajdsflksdjflk"/>
-
-    <View
+    <LinearLayout
+        android:id="@+id/friend_layout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:layout_alignParentBottom="true"
-        android:background="@color/divider_alpha"/>
-    
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="ajdsflksdjflk"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_size"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_alpha"/>
+    </LinearLayout>
 </LinearLayout>

@@ -1,8 +1,10 @@
 package com.elastos.chat.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -31,6 +33,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
 
     private MainActivity mainActivity = null;
+    // 获取接口对象
+    private static FriendMessage friendMessageListener;
     private MainFragmentPagerAdapter mainFragmentPagerAdapter;
 
     Carrier carrierInst = null;
@@ -43,6 +47,7 @@ public class MainActivity extends BaseActivity {
 
     private TextView txtInitProgress;
 
+    private void MainActivity(){}
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -83,6 +88,7 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case INIT_CARRIER: {
+                    txtInitProgress = findViewById(R.id.init_progress);
                     TestOptions options = new TestOptions(getAppPath());
                     TestHandler handler = new TestHandler(mainActivity);
                     //1.初始化实例，获得相关信息
@@ -174,13 +180,26 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-
         @Override
         //3.2 接受好友信息
         public void onFriendMessage(Carrier carrier,String fromId, String message) {
             Log.i(CALLBACK,"address:" + fromId + "connection changed to: " + message);
+            if(!(friendMessageListener ==null)){
+                friendMessageListener.Message(fromId,message);
+            }
         }
 
     }
+
+        // 定义接口
+        public interface FriendMessage{
+            public void Message(String sFromID,String sMessage);
+        }
+
+        //用于B绑定接口
+        public void setOnFriendMessage(FriendMessage mListener) {
+            this.friendMessageListener = mListener;
+        }
+
 
 }

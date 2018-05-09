@@ -22,6 +22,10 @@
         <activity
             android:name=".activity.MyQRCodeActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.SendMessageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

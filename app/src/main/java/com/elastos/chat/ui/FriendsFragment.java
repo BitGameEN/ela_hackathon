@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 
 import com.elastos.chat.R;
 import com.elastos.chat.activity.MainActivity;
+import com.elastos.chat.activity.MyQRCodeActivity;
 import com.elastos.chat.adapter.BaseTypeAdapter;
 import com.elastos.chat.ui.item.FriendItemViewBinder;
 import com.elastos.chat.ui.item.FriendItemViewModel;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
+import org.elastos.carrier.Log;
 import org.elastos.carrier.exceptions.ElastosException;
 
 import java.util.List;
@@ -40,7 +42,10 @@ public class FriendsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_friends, container, false);
+        View view = inflater.inflate(R.layout.fragment_friends, container, false);
+
+
+        return view;
     }
 
     @Override
@@ -64,8 +69,11 @@ public class FriendsFragment extends BaseFragment {
             Items items = new Items();
             for (FriendInfo friendInfo : friendInfoList) {
                 items.add(new FriendItemViewModel(friendInfo));
+
             }
             adapter.addData(items);
+
+
         } catch (ElastosException e) {
             e.printStackTrace();
         }
