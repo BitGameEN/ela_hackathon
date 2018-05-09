@@ -36,8 +36,6 @@ public class HomeFragment extends BaseFragment {
     private EditText etDelFriendUid;
     private EditText etPublicMsg;
 
-    Carrier carrierInst = null;
-
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
         return homeFragment;
@@ -61,7 +59,7 @@ public class HomeFragment extends BaseFragment {
                 if(!friendadd.equals("")) {
                     try {
                         Log.v("","向"+friendadd+"发送好友申请");
-                        carrierInst.addFriend(friendadd, "auto-accepted");
+                        Carrier.getInstance().addFriend(friendadd, "auto-accepted");
                     } catch (ElastosException e) {
                         e.printStackTrace();
                     }
@@ -76,7 +74,7 @@ public class HomeFragment extends BaseFragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 try {
-                    List<FriendInfo> friendInfos = carrierInst.getFriends();
+                    List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
                     if(friendInfos.size()>0) {
                         for (FriendInfo fi:friendInfos) {
                             Log.v("", fi.getUserId());
@@ -96,7 +94,7 @@ public class HomeFragment extends BaseFragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 try {
-                    carrierInst.removeFriend(etDelFriendUid.getText().toString());
+                    Carrier.getInstance().removeFriend(etDelFriendUid.getText().toString());
                 } catch (ElastosException e) {
                     e.printStackTrace();
                 }
@@ -113,11 +111,11 @@ public class HomeFragment extends BaseFragment {
                 String msg = activity.get("public_message");
                 Log.v("", msg);
                 try {
-                    List<FriendInfo> friendInfos = carrierInst.getFriends();
+                    List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
                     if(friendInfos.size()>0) {
                         for (FriendInfo fi:friendInfos) {
                             Log.v("", fi.getUserId());
-                            carrierInst.sendFriendMessage(fi.getUserId(), msg);
+                            Carrier.getInstance().sendFriendMessage(fi.getUserId(), msg);
                         }
                     }
                 } catch (ElastosException e) {
@@ -128,9 +126,8 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
-    public void updateInfo(String carrierAddr, String carrierUserId,Carrier carrier) {
+    public void updateInfo(String carrierAddr, String carrierUserId) {
         txtAddress.setText(carrierAddr);
         txtUserId.setText(carrierUserId);
-        carrierInst = carrier;
     }
 }

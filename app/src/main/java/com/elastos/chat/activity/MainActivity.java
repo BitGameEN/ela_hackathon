@@ -104,7 +104,7 @@ public class MainActivity extends BaseActivity {
 
                         //更新UI
                         HomeFragment homeFragment = (HomeFragment)mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.HOME);
-                        homeFragment.updateInfo(carrierAddr, carrierUserId,carrierInst);
+                        homeFragment.updateInfo(carrierAddr, carrierUserId);
                     } catch (ElastosException e) {
                         txtInitProgress.setText("连接失败 ");
                         e.printStackTrace();
@@ -144,8 +144,9 @@ public class MainActivity extends BaseActivity {
             Log.i(CALLBACK,"friendid:" + friendId + "connection changed to: " + status);
             from = friendId;
             friendStatus = status;
-            if (friendStatus == ConnectionStatus.Connected)
+            if (friendStatus == ConnectionStatus.Connected) {
                 synch.wakeup();
+            }
         }
 
         //2.2 通过好友验证
