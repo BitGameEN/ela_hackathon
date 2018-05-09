@@ -31,8 +31,11 @@ public class HomeFragment extends BaseFragment {
     private Button butAddFriend;
     private Button butGetFriend;
     private Button butDelFriend;
+    private Button butPublishMsg;
     private EditText etFriendAddress;
     private EditText etDelFriendUid;
+    private EditText etPublicMsg;
+
     Carrier carrierInst = null;
 
     public static HomeFragment newInstance() {
@@ -85,8 +88,8 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-        etDelFriendUid=view.findViewById(R.id.home_et_friend_del_address);
-        butDelFriend = view.findViewById(R.id.home_et_friend_del_uid);
+        etDelFriendUid = view.findViewById(R.id.home_et_friend_del_address);
+        butDelFriend = view.findViewById(R.id.home_but_friend_del_uid);
         butDelFriend.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -97,6 +100,17 @@ public class HomeFragment extends BaseFragment {
                 } catch (ElastosException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        etPublicMsg = view.findViewById(R.id.home_et_public_msg);
+        butPublishMsg = view.findViewById(R.id.home_but_publish_msg);
+        butPublishMsg.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                activity.put("public_message", etPublicMsg.getText().toString());
+                Log.v("", activity.get("public_message"));
             }
         });
         return view;
