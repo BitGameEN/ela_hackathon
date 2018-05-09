@@ -14,6 +14,7 @@ import com.elastos.chat.adapter.BaseTypeAdapter;
 import com.elastos.chat.ui.item.FriendItemViewBinder;
 import com.elastos.chat.ui.item.FriendItemViewModel;
 
+import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 
@@ -59,7 +60,7 @@ public class FriendsFragment extends BaseFragment {
     public void onPageFirstStart() {
         // TODO: 2018/5/8 carrierInst 可能为空
         try {
-            List<FriendInfo> friendInfoList = ((MainActivity) getActivity()).carrierInst.getFriends();
+            List<FriendInfo> friendInfoList = Carrier.getInstance().getFriends();
             Items items = new Items();
             for (FriendInfo friendInfo : friendInfoList) {
                 items.add(new FriendItemViewModel(friendInfo));

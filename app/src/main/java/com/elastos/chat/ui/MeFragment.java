@@ -11,6 +11,7 @@ import com.elastos.chat.activity.MainActivity;
 import com.elastos.chat.activity.MyQRCodeActivity;
 import com.elastos.chat.ui.view.ProfileItemView;
 
+import org.elastos.carrier.Carrier;
 import org.elastos.carrier.exceptions.ElastosException;
 
 import butterknife.BindInt;
@@ -42,7 +43,7 @@ public class MeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 try {
-                    String address = ((MainActivity) getContext()).carrierInst.getAddress();
+                    String address = Carrier.getInstance().getAddress();
                     MyQRCodeActivity.start(getContext(),address);
                 } catch (ElastosException e) {
                     e.printStackTrace();
