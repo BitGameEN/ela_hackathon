@@ -18,4 +18,10 @@
         android:layout_height="50dp"
         app:name="@string/my_qr_code"/>
 
+    <com.elastos.chat.ui.view.ProfileItemView
+        android:id="@+id/scan"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:name="@string/scan_add_friend"/>
+
 </LinearLayout>

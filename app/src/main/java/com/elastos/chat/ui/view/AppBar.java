@@ -3,6 +3,7 @@ package com.elastos.chat.ui.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ public class AppBar extends RelativeLayout {
         setClickable(true);
         LayoutInflater.from(context).inflate(R.layout.view_appbar, this);
         ButterKnife.bind(this, this);
+        setBackgroundColor(ContextCompat.getColor(getContext(),R.color.white));
         back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

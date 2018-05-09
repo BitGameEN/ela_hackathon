@@ -10,10 +10,14 @@ import com.elastos.chat.R;
 import com.elastos.chat.ui.view.AppBar;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.Intents;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.CompoundBarcodeView;
+
+import org.elastos.carrier.Carrier;
+import org.elastos.carrier.exceptions.ElastosException;
 
 import java.util.List;
 
@@ -51,7 +55,15 @@ public class ScanQRCodeActivity extends BaseActivity {
                     barcodeScannerView.resume();
                     Toast.makeText(ScanQRCodeActivity.this, "没有发现二维码", Toast.LENGTH_SHORT).show();
                 } else {
-                    // TODO: 2018/5/9 添加好友
+                    try {
+                        Carrier.getInstance().addFriend(result.toString(),"hello");
+                        Toast.makeText(ScanQRCodeActivity.this, "添加好友成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } catch (ElastosException e) {
+                        e.printStackTrace();
+                        QRCodeContentActivity.start(ScanQRCodeActivity.this,result.toString());
+                        finish();
+                    }
                 }
             }
 

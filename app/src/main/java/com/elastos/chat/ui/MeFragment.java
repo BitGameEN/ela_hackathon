@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.elastos.chat.R;
 import com.elastos.chat.activity.MyQRCodeActivity;
 import com.elastos.chat.activity.NicknameSetActivity;
+import com.elastos.chat.activity.ScanQRCodeActivity;
 import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.ProfileItemView;
 
@@ -30,6 +31,8 @@ public class MeFragment extends BaseFragment {
     ProfileItemView qrCodeItem;
     @BindView(R.id.nickname)
     ProfileItemView nickname;
+    @BindView(R.id.scan)
+    ProfileItemView scan;
 
     public static MeFragment newInstance() {
         MeFragment meFragment = new MeFragment();
@@ -45,6 +48,23 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onPageFirstStart() {
+        super.onPageFirstStart();
+        try {
+            nickname.setDesc(Carrier.getInstance().getSelfInfo().getName());
+            nickname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(NicknameSetActivity.getStartIntent(getContext(), nickname.getDesc()), REQUEST_CODE_SET_NAME);
+                }
+            });
+        } catch (ElastosException e) {
+            e.printStackTrace();
+        }
+
         qrCodeItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,22 +76,12 @@ public class MeFragment extends BaseFragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void onPageFirstStart() {
-        super.onPageFirstStart();
-        try {
-            nickname.setDesc(Carrier.getInstance().getSelfInfo().getName());
-            nickname.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivityForResult(NicknameSetActivity.getStartIntent(getContext(),nickname.getDesc()),REQUEST_CODE_SET_NAME);
-                }
-            });
-        } catch (ElastosException e) {
-            e.printStackTrace();
-        }
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScanQRCodeActivity.start(getContext());
+            }
+        });
     }
 
     @Override
