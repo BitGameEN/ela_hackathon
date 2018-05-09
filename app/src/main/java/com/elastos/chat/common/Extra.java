@@ -1,7 +1,5 @@
 package com.elastos.chat.common;
 
-import android.content.Context;
-
 /**
  * @author rczhang on 2018/05/08.
  */
