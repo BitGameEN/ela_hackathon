@@ -110,7 +110,19 @@ public class HomeFragment extends BaseFragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 activity.put("public_message", etPublicMsg.getText().toString());
-                Log.v("", activity.get("public_message"));
+                String msg = activity.get("public_message");
+                Log.v("", msg);
+                try {
+                    List<FriendInfo> friendInfos = carrierInst.getFriends();
+                    if(friendInfos.size()>0) {
+                        for (FriendInfo fi:friendInfos) {
+                            Log.v("", fi.getUserId());
+                            carrierInst.sendFriendMessage(fi.getUserId(), msg);
+                        }
+                    }
+                } catch (ElastosException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return view;
