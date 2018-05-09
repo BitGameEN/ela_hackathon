@@ -88,7 +88,6 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case INIT_CARRIER: {
-                    txtInitProgress = findViewById(R.id.init_progress);
                     TestOptions options = new TestOptions(getAppPath());
                     TestHandler handler = new TestHandler(mainActivity);
                     //1.初始化实例，获得相关信息
@@ -180,6 +179,7 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+
         @Override
         //3.2 接受好友信息
         public void onFriendMessage(Carrier carrier,String fromId, String message) {
@@ -191,15 +191,14 @@ public class MainActivity extends BaseActivity {
 
     }
 
-        // 定义接口
-        public interface FriendMessage{
-            public void Message(String sFromID,String sMessage);
-        }
+    // 定义接口
+    public interface FriendMessage{
+        public void Message(String sFromID,String sMessage);
+    }
 
-        //用于B绑定接口
-        public void setOnFriendMessage(FriendMessage mListener) {
-            this.friendMessageListener = mListener;
-        }
-
+    //用于B绑定接口
+    public void setOnFriendMessage(FriendMessage mListener) {
+        this.friendMessageListener = mListener;
+    }
 
 }
