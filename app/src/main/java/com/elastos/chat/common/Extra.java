@@ -5,4 +5,5 @@ package com.elastos.chat.common;
  */
 public final class Extra {
     public static final String FRAGMENTS_TAGS = "fragments_tags";
+    public static final String QR_CODE_CONTENT = "qr_code_content";
 }

@@ -6,6 +6,7 @@
               android:orientation="vertical">
 
     <com.elastos.chat.ui.view.ProfileItemView
+        android:id="@+id/qr_code"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
