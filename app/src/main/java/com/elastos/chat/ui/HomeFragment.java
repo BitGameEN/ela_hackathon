@@ -110,16 +110,18 @@ public class HomeFragment extends BaseFragment {
                 activity.put("public_message", etPublicMsg.getText().toString());
                 String msg = activity.get("public_message");
                 Log.v("", msg);
-                try {
-                    List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
-                    if(friendInfos.size()>0) {
-                        for (FriendInfo fi:friendInfos) {
-                            Log.v("", fi.getUserId());
-                            Carrier.getInstance().sendFriendMessage(fi.getUserId(), msg);
+                if (! msg.trim().isEmpty()){
+                    try {
+                        List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
+                        if(friendInfos.size()>0) {
+                            for (FriendInfo fi:friendInfos) {
+                                Log.v("", fi.getUserId());
+                                Carrier.getInstance().sendFriendMessage(fi.getUserId(), msg);
+                            }
                         }
+                    } catch (ElastosException e) {
+                        e.printStackTrace();
                     }
-                } catch (ElastosException e) {
-                    e.printStackTrace();
                 }
             }
         });

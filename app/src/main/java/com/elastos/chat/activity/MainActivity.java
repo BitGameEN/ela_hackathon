@@ -30,9 +30,10 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
 
+    private MainActivity mainActivity = null;
     private MainFragmentPagerAdapter mainFragmentPagerAdapter;
 
-    public Carrier carrierInst = null;
+    Carrier carrierInst = null;
     String carrierAddr = null;
     String carrierUserId = null;
     String TAG = "DemoTag";
@@ -70,6 +71,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews(savedInstanceState);
+        mainActivity = this;
         txtInitProgress = findViewById(R.id.init_progress);
         txtInitProgress.setText("连接中.... ");
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
@@ -82,7 +84,7 @@ public class MainActivity extends BaseActivity {
             switch (msg.what) {
                 case INIT_CARRIER: {
                     TestOptions options = new TestOptions(getAppPath());
-                    TestHandler handler = new TestHandler();
+                    TestHandler handler = new TestHandler(mainActivity);
                     //1.初始化实例，获得相关信息
                     try {
                         //1.1获得Carrier的实例
@@ -135,6 +137,9 @@ public class MainActivity extends BaseActivity {
         String from;
         ConnectionStatus friendStatus;
         String CALLBACK="call back";
+        MainActivity mainActivity = null;
+
+        TestHandler(MainActivity mainActivity) {super(); this.mainActivity = mainActivity;}
 
         public void onReady(Carrier carrier) {
             synch.wakeup();
@@ -146,6 +151,14 @@ public class MainActivity extends BaseActivity {
             friendStatus = status;
             if (friendStatus == ConnectionStatus.Connected) {
                 synch.wakeup();
+                String msg = mainActivity.get("public_message");
+                if (! msg.trim().isEmpty()){
+                    try {
+                        Carrier.getInstance().sendFriendMessage(friendId, msg);
+                    } catch (ElastosException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 
