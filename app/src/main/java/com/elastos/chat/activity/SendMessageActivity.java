@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.common.Extra;
@@ -78,8 +79,10 @@ public class SendMessageActivity extends BaseActivity {
                     Log.v("",FriendID+"  "+edSendMessage.getText());
                     Carrier.getInstance().sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
 //                    ((MainActivity) getApplicationContext()).carrierInst.sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
+                    Toast.makeText(SendMessageActivity.this, "发送消息成功", Toast.LENGTH_SHORT).show();
                 } catch (ElastosException e) {
                     e.printStackTrace();
+                    Toast.makeText(SendMessageActivity.this, "发送消息失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -99,8 +102,10 @@ public class SendMessageActivity extends BaseActivity {
                             }
                         }
                     }
+                    Toast.makeText(SendMessageActivity.this, "推荐好友成功", Toast.LENGTH_SHORT).show();
                 } catch (ElastosException e) {
                     e.printStackTrace();
+                    Toast.makeText(SendMessageActivity.this, "推荐好友失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
@@ -184,8 +185,10 @@ public class MainActivity extends BaseActivity {
                 // 先全部自动接受为好友
                 carrier.AcceptFriend(userId);
                 mainActivity.put(userId, hello);
+                Toast.makeText(this.mainActivity, "自动添加好友成功", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this.mainActivity, "自动添加好友失败", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -197,6 +200,7 @@ public class MainActivity extends BaseActivity {
                 if (message.startsWith("{recommend}:")){
                     String recommendAddr = message.substring(12);
                     carrier.addFriend(recommendAddr, carrier.getAddress());
+                    Toast.makeText(this.mainActivity, "自动添加推荐好友成功", Toast.LENGTH_SHORT).show();
                 }else {
                     //if (!(friendMessageListener == null)) {
                     //    friendMessageListener.Message(fromId, message);
@@ -205,6 +209,9 @@ public class MainActivity extends BaseActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                if (message.startsWith("{recommend}:")){
+                    Toast.makeText(this.mainActivity, "自动添加推荐好友失败", Toast.LENGTH_SHORT).show();
+                }
             }
         }
 

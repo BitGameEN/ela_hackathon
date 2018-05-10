@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.common.Extra;
@@ -81,8 +82,10 @@ public class NicknameSetActivity extends BaseActivity {
                     intent.putExtra(Extra.NICKNAME,newName);
                     setResult(RESULT_OK,intent);
                     finish();
+                    Toast.makeText(NicknameSetActivity.this, "设置个人信息成功", Toast.LENGTH_SHORT).show();
                 } catch (ElastosException e) {
                     e.printStackTrace();
+                    Toast.makeText(NicknameSetActivity.this, "设置个人信息失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
