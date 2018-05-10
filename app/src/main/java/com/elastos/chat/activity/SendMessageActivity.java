@@ -47,7 +47,6 @@ public class SendMessageActivity extends BaseActivity {
     @BindView(R.id.message_but_send_message) Button butSendMyMessage;
     @BindView(R.id.message_but_recommend) Button butRecommend;
     public String FriendID;
-    private CompoundBarcodeView barcodeScannerView;
 
     public static void start(Context context, String friendid) {
         Intent intent = new Intent(context, SendMessageActivity.class);

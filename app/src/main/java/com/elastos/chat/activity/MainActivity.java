@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
@@ -36,7 +35,6 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    private MainActivity mainActivity = null;
     // 获取接口对象
     private static FriendMessage friendMessageListener;
     private MainFragmentPagerAdapter mainFragmentPagerAdapter;
@@ -50,9 +48,6 @@ public class MainActivity extends BaseActivity {
     private static final int INIT_CARRIER = 0;
 
     private TextView txtInitProgress;
-
-    private void MainActivity() {
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -82,7 +77,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews(savedInstanceState);
-        mainActivity = this;
         txtInitProgress = findViewById(R.id.init_progress);
         txtInitProgress.setText("连接中.... ");
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
