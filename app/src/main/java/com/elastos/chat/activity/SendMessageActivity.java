@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +18,11 @@ import android.widget.TextView;
 
 import com.elastos.chat.R;
 import com.elastos.chat.common.Extra;
+import com.elastos.chat.ui.view.AppBar;
+import com.elastos.helper.BusProvider;
 import com.elastos.helper.QRCodeHelper;
+import com.journeyapps.barcodescanner.CompoundBarcodeView;
+import com.squareup.otto.Subscribe;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.exceptions.ElastosException;
@@ -26,16 +33,16 @@ import butterknife.BindView;
  * Created by fuwei on 2018/5/9.
  */
 
-public class SendMessageActivity extends BaseActivity implements MainActivity.FriendMessage{
+public class SendMessageActivity extends BaseActivity {
 
     @BindView(R.id.message_firend_id) TextView tvFriendid;
     @BindView(R.id.message_firend_send_message) TextView tvFriendMessage;
-    @BindView(R.id.message_et_my_send_message)
-    EditText edSendMessage;
+    @BindView(R.id.message_et_my_send_message) EditText edSendMessage;
+    @BindView(R.id.message_appbar) AppBar appBar;
     @BindView(R.id.message_but_send_message)
     Button butSendMyMessage;
-    MainActivity.FriendMessage friendMessage;
     public String FriendID;
+    private CompoundBarcodeView barcodeScannerView;
 
     public static void start(Context context, String friendid) {
         Intent intent = new Intent(context, SendMessageActivity.class);
@@ -59,8 +66,7 @@ public class SendMessageActivity extends BaseActivity implements MainActivity.Fr
         super.initViews(savedInstanceState);
         setContentView(R.layout.activity_send_message);
         tvFriendid.setText("FriendID:"+FriendID);
-        MainActivity fm = new MainActivity();
-        fm.setOnFriendMessage(this);
+        appBar.setTitle(FriendID);
         butSendMyMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,17 +80,33 @@ public class SendMessageActivity extends BaseActivity implements MainActivity.Fr
                 }
             }
         });
-
     }
 
     @Override
-    public void Message(String sFromID,String sMessage) {
-        Log.v("","Message = "+sMessage);
-        if(sFromID.equals(FriendID)){
-            tvFriendMessage.setText(sMessage);
+    public void onStart() {
+        super.onStart();
+        //注册到bus事件总线中
+        BusProvider.getInstance().register(this);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
+    }
+    /**
+     * 定义订阅者，Activity中发布的消息，在此处会接收到，在此之前需要先在程序中register，看
+     * 上面的onStart和onStop函数
+     */
+    @Subscribe
+    public void setContent(MainActivity.FriendMessage data) {
+        tvFriendMessage.setText(data.getsFriendId());
+        if(data.getsFriendId().equals(FriendID)){
+            tvFriendMessage.setText(data.getsMessage());
         }
     }
 
-
-
+    @Subscribe
+    public void onDataChange(String sss) {
+        System.out.println("====" + sss);
+    }
 }

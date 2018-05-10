@@ -1,8 +1,10 @@
 package com.elastos.chat.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.elastos.chat.R;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
 import com.elastos.chat.ui.HomeFragment;
+import com.elastos.helper.BusProvider;
 import com.elastos.helper.Synchronizer;
 import com.elastos.helper.TestOptions;
 
@@ -27,8 +30,10 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.tab_layout) TabLayout tabLayout;
-    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
 
     private MainActivity mainActivity = null;
     // 获取接口对象
@@ -80,6 +85,7 @@ public class MainActivity extends BaseActivity {
         txtInitProgress = findViewById(R.id.init_progress);
         txtInitProgress.setText("连接中.... ");
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
+
     }
 
     Handler msgHandler = new Handler() {
@@ -187,19 +193,47 @@ public class MainActivity extends BaseActivity {
         //3.2 接受好友信息
         public void onFriendMessage(Carrier carrier, String fromId, String message) {
             Log.i(CALLBACK, "address:" + fromId + "connection changed to: " + message);
-            if (!(friendMessageListener == null)) {
-                friendMessageListener.Message(fromId, message);
-            }
+//            if (!(friendMessageListener == null)) {
+//                friendMessageListener.Message(fromId, message);
+//            }
+
+            BusProvider.getInstance().post(new FriendMessage(fromId,message));
         }
+
     }
 
-    // 定义接口
-    public interface FriendMessage {
-        public void Message(String sFromID, String sMessage);
-    }
+    //    // 定义接口
+//    public interface FriendMessage{
+//        public void Message(String sFromID,String sMessage);
+//    }
+//
+//    //用于B绑定接口
+//    public void setOnFriendMessage(FriendMessage mListener) {
+//        this.friendMessageListener = mListener;
+//    }
+    public static class FriendMessage {
+        private String sFriendId;
+        private String sMessage;
 
-    //用于B绑定接口
-    public void setOnFriendMessage(FriendMessage mListener) {
-        this.friendMessageListener = mListener;
+        public FriendMessage(String sFromID, String sMessage) {
+            this.sFriendId = sFromID;
+            this.sMessage = sMessage;
+        }
+
+        public String getsFriendId() {
+            return sFriendId;
+        }
+
+        public String getsMessage() {
+            return sMessage;
+        }
+
+        public void setsFriendId(String sFriendId) {
+            this.sFriendId = sFriendId;
+        }
+
+        public void setsMessage(String sMessage) {
+            this.sMessage = sMessage;
+        }
     }
 }
