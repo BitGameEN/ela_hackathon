@@ -59,7 +59,10 @@ public class HomeFragment extends BaseFragment {
                 if(!friendadd.equals("")) {
                     try {
                         Log.v("","向"+friendadd+"发送好友申请");
-                        Carrier.getInstance().addFriend(friendadd, "auto-accepted");
+                        String selfAddr = Carrier.getInstance().getAddress();
+                        Carrier.getInstance().addFriend(friendadd, selfAddr);
+                        activity.put(Carrier.getIdFromAddress(friendadd), friendadd);
+
                     } catch (ElastosException e) {
                         e.printStackTrace();
                     }

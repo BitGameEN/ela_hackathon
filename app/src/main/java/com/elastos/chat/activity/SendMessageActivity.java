@@ -25,7 +25,10 @@ import com.journeyapps.barcodescanner.CompoundBarcodeView;
 import com.squareup.otto.Subscribe;
 
 import org.elastos.carrier.Carrier;
+import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -39,8 +42,8 @@ public class SendMessageActivity extends BaseActivity {
     @BindView(R.id.message_firend_send_message) TextView tvFriendMessage;
     @BindView(R.id.message_et_my_send_message) EditText edSendMessage;
     @BindView(R.id.message_appbar) AppBar appBar;
-    @BindView(R.id.message_but_send_message)
-    Button butSendMyMessage;
+    @BindView(R.id.message_but_send_message) Button butSendMyMessage;
+    @BindView(R.id.message_but_recommend) Button butRecommend;
     public String FriendID;
     private CompoundBarcodeView barcodeScannerView;
 
@@ -75,6 +78,27 @@ public class SendMessageActivity extends BaseActivity {
                     Log.v("",FriendID+"  "+edSendMessage.getText());
                     Carrier.getInstance().sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
 //                    ((MainActivity) getApplicationContext()).carrierInst.sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
+                } catch (ElastosException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        butRecommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    Log.v("",FriendID+" recommended");
+                    String recommendAddr = get(FriendID);
+                    List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
+                    if(friendInfos.size()>0) {
+                        for (FriendInfo fi:friendInfos) {
+                            if(fi.getUserId() != FriendID){
+                                Log.v("", fi.getUserId());
+                                Carrier.getInstance().sendFriendMessage(fi.getUserId(), "{recommend}:"+recommendAddr);
+                            }
+                        }
+                    }
                 } catch (ElastosException e) {
                     e.printStackTrace();
                 }

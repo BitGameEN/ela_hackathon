@@ -181,9 +181,9 @@ public class MainActivity extends BaseActivity {
             try {
 
                 Log.v("", "接收到" + userId + "发来的好友申请，内容 " + hello);
-                if (hello.equals("auto-accepted")) {
-                    carrier.AcceptFriend(userId);
-                }
+                // 先全部自动接受为好友
+                carrier.AcceptFriend(userId);
+                mainActivity.put(userId, hello);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -192,12 +192,20 @@ public class MainActivity extends BaseActivity {
         @Override
         //3.2 接受好友信息
         public void onFriendMessage(Carrier carrier, String fromId, String message) {
-            Log.i(CALLBACK, "address:" + fromId + "connection changed to: " + message);
-//            if (!(friendMessageListener == null)) {
-//                friendMessageListener.Message(fromId, message);
-//            }
-
-            BusProvider.getInstance().post(new FriendMessage(fromId,message));
+            try {
+                Log.i(CALLBACK, "address:" + fromId + "message: " + message);
+                if (message.startsWith("{recommend}:")){
+                    String recommendAddr = message.substring(12);
+                    carrier.addFriend(recommendAddr, carrier.getAddress());
+                }else {
+                    //if (!(friendMessageListener == null)) {
+                    //    friendMessageListener.Message(fromId, message);
+                    //}
+                    BusProvider.getInstance().post(new FriendMessage(fromId, message));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
