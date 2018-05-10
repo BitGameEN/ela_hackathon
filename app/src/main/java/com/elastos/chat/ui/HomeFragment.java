@@ -12,8 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elastos.chat.R;
+import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.activity.MainActivity;
-import com.elastos.chat.activity.ScanQRCodeActivity;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         txtAddress = view.findViewById(R.id.home_address);
         txtUserId = view.findViewById(R.id.home_user_id);
-        activity = (MainActivity)this.getActivity();
+        activity = (MainActivity) this.getActivity();
         etFriendAddress = view.findViewById(R.id.home_et_friend_address);
         butAddFriend = view.findViewById(R.id.home_but_add_friend);
         butAddFriend.setOnClickListener(new View.OnClickListener() {
@@ -58,12 +58,12 @@ public class HomeFragment extends BaseFragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 final String friendadd = etFriendAddress.getText().toString();
-                if(!friendadd.equals("")) {
+                if (!friendadd.equals("")) {
                     try {
-                        Log.v("","向"+friendadd+"发送好友申请");
+                        Log.v("", "向" + friendadd + "发送好友申请");
                         String selfAddr = Carrier.getInstance().getAddress();
                         Carrier.getInstance().addFriend(friendadd, selfAddr);
-                        activity.put(Carrier.getIdFromAddress(friendadd), friendadd);
+                        SharedPreferencesHelper.put(Carrier.getIdFromAddress(friendadd), friendadd);
                         Toast.makeText(activity, "添加好友成功", Toast.LENGTH_SHORT).show();
                     } catch (ElastosException e) {
                         e.printStackTrace();
@@ -81,10 +81,10 @@ public class HomeFragment extends BaseFragment {
                 // TODO Auto-generated method stub
                 try {
                     List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
-                    if(friendInfos.size()>0) {
-                        for (FriendInfo fi:friendInfos) {
+                    if (friendInfos.size() > 0) {
+                        for (FriendInfo fi : friendInfos) {
                             Log.v("", fi.getUserId());
-                            txtFriendinfo.setText(txtFriendinfo.getText()+"|"+fi.getUserId());
+                            txtFriendinfo.setText(txtFriendinfo.getText() + "|" + fi.getUserId());
                         }
                     }
                 } catch (ElastosException e) {
@@ -101,7 +101,7 @@ public class HomeFragment extends BaseFragment {
                 // TODO Auto-generated method stub
                 try {
                     String toDelFriendUid = etDelFriendUid.getText().toString().trim();
-                    if(! toDelFriendUid.isEmpty()){
+                    if (!toDelFriendUid.isEmpty()) {
                         Carrier.getInstance().removeFriend(etDelFriendUid.getText().toString());
                         Toast.makeText(activity, "删除好友成功", Toast.LENGTH_SHORT).show();
                     }
@@ -118,14 +118,14 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                activity.put("public_message", etPublicMsg.getText().toString());
-                String msg = activity.get("public_message");
+                SharedPreferencesHelper.put("public_message", etPublicMsg.getText().toString());
+                String msg = SharedPreferencesHelper.get("public_message");
                 Log.v("", msg);
-                if (! msg.trim().isEmpty()){
+                if (!msg.trim().isEmpty()) {
                     try {
                         List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
-                        if(friendInfos.size()>0) {
-                            for (FriendInfo fi:friendInfos) {
+                        if (friendInfos.size() > 0) {
+                            for (FriendInfo fi : friendInfos) {
                                 Log.v("", fi.getUserId());
                                 Carrier.getInstance().sendFriendMessage(fi.getUserId(), msg);
                             }

@@ -1,7 +1,5 @@
 package com.elastos.chat.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -29,20 +27,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void initViews(Bundle savedInstanceState) {
-    }
-
-    public boolean put(String strKey, String strValue) {
-        SharedPreferences sharedPreferences = this.getApplicationContext().
-                getSharedPreferences("ela_hackathon", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(strKey, strValue);
-        editor.apply();
-        return true;
-    }
-
-    public String get(String strKey) {
-        SharedPreferences sharedPreferences = this.getApplicationContext().
-                getSharedPreferences("ela_hackathon", Context.MODE_PRIVATE);
-        return sharedPreferences.getString(strKey, "");
     }
 }

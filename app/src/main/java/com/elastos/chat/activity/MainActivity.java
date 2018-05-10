@@ -1,10 +1,8 @@
 package com.elastos.chat.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,8 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elastos.chat.R;
+import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
 import com.elastos.chat.ui.HomeFragment;
+import com.elastos.chat.util.ToastUtils;
 import com.elastos.helper.BusProvider;
 import com.elastos.helper.Synchronizer;
 import com.elastos.helper.TestOptions;
@@ -86,7 +86,6 @@ public class MainActivity extends BaseActivity {
         txtInitProgress = findViewById(R.id.init_progress);
         txtInitProgress.setText("连接中.... ");
         msgHandler.sendEmptyMessageDelayed(INIT_CARRIER, DELAY);
-
     }
 
     Handler msgHandler = new Handler() {
@@ -95,7 +94,7 @@ public class MainActivity extends BaseActivity {
             switch (msg.what) {
                 case INIT_CARRIER: {
                     TestOptions options = new TestOptions(getAppPath());
-                    TestHandler handler = new TestHandler(mainActivity);
+                    TestHandler handler = new TestHandler();
                     //1.初始化实例，获得相关信息
                     try {
                         //1.1获得Carrier的实例
@@ -149,11 +148,9 @@ public class MainActivity extends BaseActivity {
         String from;
         ConnectionStatus friendStatus;
         String CALLBACK = "call back";
-        MainActivity mainActivity = null;
 
-        TestHandler(MainActivity mainActivity) {
+        TestHandler() {
             super();
-            this.mainActivity = mainActivity;
         }
 
         public void onReady(Carrier carrier) {
@@ -166,7 +163,7 @@ public class MainActivity extends BaseActivity {
             friendStatus = status;
             if (friendStatus == ConnectionStatus.Connected) {
                 synch.wakeup();
-                String msg = mainActivity.get("public_message");
+                String msg = SharedPreferencesHelper.get("public_message");
                 if (!msg.trim().isEmpty()) {
                     try {
                         Carrier.getInstance().sendFriendMessage(friendId, msg);
@@ -184,11 +181,11 @@ public class MainActivity extends BaseActivity {
                 Log.v("", "接收到" + userId + "发来的好友申请，内容 " + hello);
                 // 先全部自动接受为好友
                 carrier.AcceptFriend(userId);
-                mainActivity.put(userId, hello);
-                Toast.makeText(this.mainActivity, "自动添加好友成功", Toast.LENGTH_SHORT).show();
+                SharedPreferencesHelper.put(userId, hello);
+                ToastUtils.shortT("自动添加好友成功");
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this.mainActivity, "自动添加好友失败", Toast.LENGTH_SHORT).show();
+                ToastUtils.shortT("自动添加好友失败");
             }
         }
 
@@ -197,11 +194,11 @@ public class MainActivity extends BaseActivity {
         public void onFriendMessage(Carrier carrier, String fromId, String message) {
             try {
                 Log.i(CALLBACK, "address:" + fromId + "message: " + message);
-                if (message.startsWith("{recommend}:")){
+                if (message.startsWith("{recommend}:")) {
                     String recommendAddr = message.substring(12);
                     carrier.addFriend(recommendAddr, carrier.getAddress());
-                    Toast.makeText(this.mainActivity, "自动添加推荐好友成功", Toast.LENGTH_SHORT).show();
-                }else {
+                    ToastUtils.shortT("自动添加推荐好友成功");
+                } else {
                     //if (!(friendMessageListener == null)) {
                     //    friendMessageListener.Message(fromId, message);
                     //}
@@ -209,23 +206,22 @@ public class MainActivity extends BaseActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                if (message.startsWith("{recommend}:")){
-                    Toast.makeText(this.mainActivity, "自动添加推荐好友失败", Toast.LENGTH_SHORT).show();
+                if (message.startsWith("{recommend}:")) {
+                    ToastUtils.shortT("自动添加推荐好友失败");
                 }
             }
         }
-
     }
 
     //    // 定义接口
-//    public interface FriendMessage{
-//        public void Message(String sFromID,String sMessage);
-//    }
-//
-//    //用于B绑定接口
-//    public void setOnFriendMessage(FriendMessage mListener) {
-//        this.friendMessageListener = mListener;
-//    }
+    //    public interface FriendMessage{
+    //        public void Message(String sFromID,String sMessage);
+    //    }
+    //
+    //    //用于B绑定接口
+    //    public void setOnFriendMessage(FriendMessage mListener) {
+    //        this.friendMessageListener = mListener;
+    //    }
     public static class FriendMessage {
         private String sFriendId;
         private String sMessage;

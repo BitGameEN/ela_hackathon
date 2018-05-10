@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elastos.chat.R;
+import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.AppBar;
 import com.elastos.helper.BusProvider;
@@ -95,7 +96,7 @@ public class SendMessageActivity extends BaseActivity {
 
                 try {
                     Log.v("",FriendID+" recommended");
-                    String recommendAddr = get(FriendID);
+                    String recommendAddr = SharedPreferencesHelper.get(FriendID);
                     List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
                     if(friendInfos.size()>0) {
                         for (FriendInfo fi:friendInfos) {
