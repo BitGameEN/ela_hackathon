@@ -21,6 +21,7 @@ import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.AppBar;
+import com.elastos.chat.util.ToastUtils;
 import com.elastos.helper.BusProvider;
 import com.elastos.helper.QRCodeHelper;
 import com.journeyapps.barcodescanner.CompoundBarcodeView;
@@ -80,12 +81,11 @@ public class SendMessageActivity extends BaseActivity {
                     if(! toSendMsg.isEmpty()){
                         Log.v("",FriendID+"  "+edSendMessage.getText());
                         Carrier.getInstance().sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
-//                    ((MainActivity) getApplicationContext()).carrierInst.sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
-                        Toast.makeText(SendMessageActivity.this, "发送消息成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("发送消息成功");
                     }
                 } catch (ElastosException e) {
                     e.printStackTrace();
-                    Toast.makeText(SendMessageActivity.this, "发送消息失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("发送消息失败");
                 }
             }
         });
@@ -105,10 +105,10 @@ public class SendMessageActivity extends BaseActivity {
                             }
                         }
                     }
-                    Toast.makeText(SendMessageActivity.this, "推荐好友成功", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("推荐好友成功");
                 } catch (ElastosException e) {
                     e.printStackTrace();
-                    Toast.makeText(SendMessageActivity.this, "推荐好友失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("推荐好友失败");
                 }
             }
         });

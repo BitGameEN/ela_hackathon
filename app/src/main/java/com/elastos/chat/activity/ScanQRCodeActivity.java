@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.ui.view.AppBar;
+import com.elastos.chat.util.ToastUtils;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.Intents;
@@ -53,11 +54,11 @@ public class ScanQRCodeActivity extends BaseActivity {
                 barcodeScannerView.pause();
                 if (result.getResult().getBarcodeFormat() != BarcodeFormat.QR_CODE) {
                     barcodeScannerView.resume();
-                    Toast.makeText(ScanQRCodeActivity.this, "没有发现二维码", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("没有发现二维码");
                 } else {
                     try {
                         Carrier.getInstance().addFriend(result.toString(),"hello");
-                        Toast.makeText(ScanQRCodeActivity.this, "添加好友成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("添加好友成功");
                         finish();
                     } catch (ElastosException e) {
                         e.printStackTrace();

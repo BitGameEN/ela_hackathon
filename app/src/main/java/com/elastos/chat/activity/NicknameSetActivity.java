@@ -8,11 +8,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.AppBar;
+import com.elastos.chat.util.ToastUtils;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.UserInfo;
@@ -79,17 +79,15 @@ public class NicknameSetActivity extends BaseActivity {
                     selfInfo.setName(newName);
                     Carrier.getInstance().setSelfInfo(selfInfo);
                     Intent intent = new Intent();
-                    intent.putExtra(Extra.NICKNAME,newName);
-                    setResult(RESULT_OK,intent);
+                    intent.putExtra(Extra.NICKNAME, newName);
+                    setResult(RESULT_OK, intent);
                     finish();
-                    Toast.makeText(NicknameSetActivity.this, "设置个人信息成功", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("设置个人信息成功");
                 } catch (ElastosException e) {
                     e.printStackTrace();
-                    Toast.makeText(NicknameSetActivity.this, "设置个人信息失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("设置个人信息失败");
                 }
             }
         });
     }
-
-
 }

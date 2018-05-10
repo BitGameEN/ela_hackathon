@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.activity.MainActivity;
+import com.elastos.chat.util.ToastUtils;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
@@ -64,10 +65,10 @@ public class HomeFragment extends BaseFragment {
                         String selfAddr = Carrier.getInstance().getAddress();
                         Carrier.getInstance().addFriend(friendadd, selfAddr);
                         SharedPreferencesHelper.put(Carrier.getIdFromAddress(friendadd), friendadd);
-                        Toast.makeText(activity, "添加好友成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("添加好友成功");
                     } catch (ElastosException e) {
                         e.printStackTrace();
-                        Toast.makeText(activity, "添加好友失败", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("添加好友失败");
                     }
                 }
             }
@@ -103,11 +104,11 @@ public class HomeFragment extends BaseFragment {
                     String toDelFriendUid = etDelFriendUid.getText().toString().trim();
                     if (!toDelFriendUid.isEmpty()) {
                         Carrier.getInstance().removeFriend(etDelFriendUid.getText().toString());
-                        Toast.makeText(activity, "删除好友成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("删除好友成功");
                     }
                 } catch (ElastosException e) {
                     e.printStackTrace();
-                    Toast.makeText(activity, "删除好友失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.shortT("删除好友失败");
                 }
             }
         });
@@ -130,10 +131,10 @@ public class HomeFragment extends BaseFragment {
                                 Carrier.getInstance().sendFriendMessage(fi.getUserId(), msg);
                             }
                         }
-                        Toast.makeText(activity, "发布消息成功", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("发布消息成功");
                     } catch (ElastosException e) {
                         e.printStackTrace();
-                        Toast.makeText(activity, "发布消息失败", Toast.LENGTH_SHORT).show();
+                        ToastUtils.shortT("发布消息失败");
                     }
                 }
             }
