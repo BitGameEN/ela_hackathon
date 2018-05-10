@@ -76,10 +76,13 @@ public class SendMessageActivity extends BaseActivity {
             public void onClick(View v) {
 
                 try {
-                    Log.v("",FriendID+"  "+edSendMessage.getText());
-                    Carrier.getInstance().sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
+                    String toSendMsg = edSendMessage.getText().toString().trim();
+                    if(! toSendMsg.isEmpty()){
+                        Log.v("",FriendID+"  "+edSendMessage.getText());
+                        Carrier.getInstance().sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
 //                    ((MainActivity) getApplicationContext()).carrierInst.sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
-                    Toast.makeText(SendMessageActivity.this, "发送消息成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SendMessageActivity.this, "发送消息成功", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (ElastosException e) {
                     e.printStackTrace();
                     Toast.makeText(SendMessageActivity.this, "发送消息失败", Toast.LENGTH_SHORT).show();

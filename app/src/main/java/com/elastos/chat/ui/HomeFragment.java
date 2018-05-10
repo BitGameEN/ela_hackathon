@@ -100,8 +100,11 @@ public class HomeFragment extends BaseFragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 try {
-                    Carrier.getInstance().removeFriend(etDelFriendUid.getText().toString());
-                    Toast.makeText(activity, "删除好友成功", Toast.LENGTH_SHORT).show();
+                    String toDelFriendUid = etDelFriendUid.getText().toString().trim();
+                    if(! toDelFriendUid.isEmpty()){
+                        Carrier.getInstance().removeFriend(etDelFriendUid.getText().toString());
+                        Toast.makeText(activity, "删除好友成功", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (ElastosException e) {
                     e.printStackTrace();
                     Toast.makeText(activity, "删除好友失败", Toast.LENGTH_SHORT).show();
