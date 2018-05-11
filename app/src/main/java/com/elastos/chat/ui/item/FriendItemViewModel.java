@@ -6,6 +6,7 @@ import android.view.TextureView;
 import com.elastos.chat.MyApplication;
 import com.elastos.chat.R;
 
+import org.elastos.carrier.ConnectionStatus;
 import org.elastos.carrier.FriendInfo;
 
 /**
@@ -28,5 +29,13 @@ public class FriendItemViewModel {
 
     public String getUserId() {
         return friendInfo.getUserId();
+    }
+
+    public String getConnectStatus() {
+        if (friendInfo.getConnectionStatus() == ConnectionStatus.Connected) {
+            return "[在线]";
+        } else {
+            return "[离线]";
+        }
     }
 }

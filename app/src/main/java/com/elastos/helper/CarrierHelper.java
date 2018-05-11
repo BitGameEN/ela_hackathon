@@ -6,6 +6,7 @@ import com.elastos.chat.util.ToastUtils;
 import org.elastos.carrier.AbstractCarrierHandler;
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.ConnectionStatus;
+import org.elastos.carrier.Log;
 import org.elastos.carrier.UserInfo;
 
 /**
@@ -56,6 +57,7 @@ public class CarrierHelper {
         }
 
         public void onFriendConnection(Carrier carrier, String friendId, ConnectionStatus status) {
+            Log.d("call back", "friendid:" + friendId + "connection changed to: " + status);
             if (callback != null) {
                 callback.onFriendConnection(carrier, friendId, status);
             }

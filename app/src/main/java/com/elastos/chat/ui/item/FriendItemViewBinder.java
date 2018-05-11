@@ -32,6 +32,7 @@ public class FriendItemViewBinder extends ItemViewBinder<FriendItemViewModel, Fr
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final FriendItemViewModel item) {
         holder.name.setText(item.getUserName());
+        holder.connectStatus.setText(item.getConnectStatus());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +45,7 @@ public class FriendItemViewBinder extends ItemViewBinder<FriendItemViewModel, Fr
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.name) TextView name;
+        @BindView(R.id.connect_status) TextView connectStatus;
 
         public ViewHolder(View itemView) {
             super(itemView);

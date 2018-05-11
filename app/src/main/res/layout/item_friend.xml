@@ -20,11 +20,23 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@id/avatar"
         android:layout_toRightOf="@id/avatar"
+        android:textColor="@color/text_black"
         android:singleLine="true"
         android:textSize="17dp"
         tools:text="测测测测测测次jalsfjlkasdjlkfajsdlkfjlksfjslkdjflk"/>
+
+    <TextView
+        android:id="@+id/connect_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/brownish_grey"
+        android:layout_below="@id/name"
+        android:layout_marginTop="4dp"
+        android:layout_alignLeft="@id/name"
+        android:textSize="15dp"
+        tools:text="[在线]"/>
 
     <View
         android:layout_width="match_parent"

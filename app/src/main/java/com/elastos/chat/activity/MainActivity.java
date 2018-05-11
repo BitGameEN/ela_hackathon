@@ -8,6 +8,8 @@ import android.util.Log;
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.adapter.MainFragmentPagerAdapter;
+import com.elastos.chat.ui.FriendsFragment;
+import com.elastos.chat.util.AndroidUtilities;
 import com.elastos.chat.util.ToastUtils;
 import com.elastos.helper.BusProvider;
 import com.elastos.helper.CarrierHelper;
@@ -52,6 +54,12 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                 }
+                AndroidUtilities.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                    }
+                });
             }
 
             //2.2 通过好友验证

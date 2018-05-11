@@ -63,6 +63,10 @@ public class FriendsFragment extends BaseFragment {
 
     @Override
     public void onPageFirstStart() {
+        updateFriendList();
+    }
+
+    public void updateFriendList() {
         try {
             List<FriendInfo> friendInfoList = Carrier.getInstance().getFriends();
             Items items = new Items();
@@ -70,7 +74,7 @@ public class FriendsFragment extends BaseFragment {
                 items.add(new FriendItemViewModel(friendInfo));
 
             }
-            adapter.addData(items);
+            adapter.setData(items);
 
 
         } catch (ElastosException e) {

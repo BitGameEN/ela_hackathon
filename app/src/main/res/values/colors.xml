@@ -20,6 +20,7 @@
     <color name="silver_three">#d9d9d9</color>
     <color name="slate_grey">#637070</color>
     <color name="steel_grey">#7f8a8a</color>
+    <color name="brownish_grey">#666666</color>
 
     <color name="divider_alpha">@color/black_alpha_10</color>
     <color name="pressed">@color/silver_three</color>
