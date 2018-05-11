@@ -26,12 +26,8 @@ import java.util.List;
  */
 public class HomeFragment extends BaseFragment {
 
-    private TextView txtAddress;
-    private TextView txtUserId;
-    private TextView txtFriendinfo;
     private MainActivity activity;
     private Button butAddFriend;
-    private Button butGetFriend;
     private Button butPublishMsg;
     private EditText etFriendAddress;
     private EditText etPublicMsg;
@@ -50,8 +46,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        txtAddress = view.findViewById(R.id.home_address);
-        txtUserId = view.findViewById(R.id.home_user_id);
         activity = (MainActivity) this.getActivity();
         etFriendAddress = view.findViewById(R.id.home_et_friend_address);
         butAddFriend = view.findViewById(R.id.home_but_add_friend);
@@ -103,18 +97,5 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-
-        try {
-            String address = Carrier.getInstance().getAddress();
-            String userId = Carrier.getInstance().getUserId();
-            updateInfo(address, userId);
-        } catch (ElastosException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void updateInfo(String carrierAddr, String carrierUserId) {
-        txtAddress.setText(carrierAddr);
-        txtUserId.setText(carrierUserId);
     }
 }

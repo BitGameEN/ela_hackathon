@@ -27,6 +27,10 @@ public class MeFragment extends BaseFragment {
 
     public static int REQUEST_CODE_SET_NAME = 1;
 
+    @BindView(R.id.my_address)
+    ProfileItemView myAdress;
+    @BindView(R.id.my_user_id)
+    ProfileItemView myUserId;
     @BindView(R.id.qr_code)
     ProfileItemView qrCodeItem;
     @BindView(R.id.nickname)
@@ -48,6 +52,15 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        try {
+            String address = Carrier.getInstance().getAddress();
+            String userId = Carrier.getInstance().getUserId();
+            myAdress.setName("地址：" + address);
+            myUserId.setName("用户ID：" + userId);
+        } catch (ElastosException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -6,10 +6,22 @@
               android:orientation="vertical">
 
     <com.elastos.chat.ui.view.ProfileItemView
-        android:id="@+id/nickname"
+        android:id="@+id/my_address"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
+        app:name="地址："/>
+
+    <com.elastos.chat.ui.view.ProfileItemView
+        android:id="@+id/my_user_id"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:name="用户ID："/>
+
+    <com.elastos.chat.ui.view.ProfileItemView
+        android:id="@+id/nickname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         app:name="@string/nickname"/>
 
     <com.elastos.chat.ui.view.ProfileItemView
