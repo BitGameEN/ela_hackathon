@@ -129,6 +129,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     public static class FriendMessage {
         private String sFriendId;
         private String sMessage;
