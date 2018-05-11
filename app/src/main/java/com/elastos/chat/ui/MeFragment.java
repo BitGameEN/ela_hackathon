@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
+import com.elastos.chat.activity.MyAddressShowActivity;
 import com.elastos.chat.activity.MyQRCodeActivity;
 import com.elastos.chat.activity.NicknameSetActivity;
 import com.elastos.chat.activity.ScanQRCodeActivity;
@@ -36,7 +37,7 @@ public class MeFragment extends BaseFragment {
     public static int REQUEST_CODE_SET_NAME = 1;
 
     @BindView(R.id.my_address)
-    ProfileItemView myAdress;
+    ProfileItemView myAddress;
     @BindView(R.id.my_user_id)
     ProfileItemView myUserId;
     @BindView(R.id.qr_code)
@@ -63,15 +64,6 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        try {
-            String address = Carrier.getInstance().getAddress();
-            String userId = Carrier.getInstance().getUserId();
-            myAdress.setName("地址：" + address);
-            myUserId.setName("用户ID：" + userId);
-        } catch (ElastosException e) {
-            e.printStackTrace();
-        }
 
         etPublicMsg = view.findViewById(R.id.home_et_public_msg);
         butPublishMsg = view.findViewById(R.id.home_but_publish_msg);
@@ -134,6 +126,27 @@ public class MeFragment extends BaseFragment {
                 ScanQRCodeActivity.start(getContext());
             }
         });
+
+        try {
+            String address = Carrier.getInstance().getAddress();
+            String userId = Carrier.getInstance().getUserId();
+            myAddress.setDesc(address);
+            myUserId.setDesc(userId);
+            myAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(MyAddressShowActivity.getStartIntent(getContext(), myAddress.getDesc()));
+                }
+            });
+            myUserId.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(MyAddressShowActivity.getStartIntent(getContext(), myUserId.getDesc()));
+                }
+            });
+        } catch (ElastosException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

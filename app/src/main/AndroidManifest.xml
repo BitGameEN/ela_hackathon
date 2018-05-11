@@ -37,6 +37,9 @@
         <activity
             android:name=".activity.QRCodeContentActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MyAddressShowActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

@@ -44,7 +44,7 @@
 
         <EditText
             android:id="@+id/home_et_public_msg"
-            android:layout_width="280dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="enter your public mesage"
