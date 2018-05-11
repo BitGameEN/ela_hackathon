@@ -40,8 +40,13 @@ public class ScanQRCodeActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int getContentViewResId() {
+        return R.layout.activity_scan_qr_code;
+    }
+
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
 
         barcodeScannerView = initializeContent();
         capture = new CaptureManager(this, barcodeScannerView);
@@ -80,7 +85,6 @@ public class ScanQRCodeActivity extends BaseActivity {
      * @return the CompoundBarcodeView
      */
     protected CompoundBarcodeView initializeContent() {
-        setContentView(R.layout.activity_scan_qr_code);
         return (CompoundBarcodeView) findViewById(R.id.zxing_barcode_scanner);
     }
 

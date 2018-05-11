@@ -67,9 +67,13 @@ public class SendMessageActivity extends BaseActivity {
     }
 
     @Override
+    protected int getContentViewResId() {
+        return R.layout.activity_send_message;
+    }
+
+    @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        setContentView(R.layout.activity_send_message);
         tvFriendid.setText("FriendID:"+FriendID);
         appBar.setTitle(FriendID);
         butSendMyMessage.setOnClickListener(new View.OnClickListener() {

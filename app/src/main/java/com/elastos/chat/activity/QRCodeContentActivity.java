@@ -33,9 +33,13 @@ public class QRCodeContentActivity extends BaseActivity {
     }
 
     @Override
+    protected int getContentViewResId() {
+        return R.layout.activity_qr_code_content;
+    }
+
+    @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        setContentView(R.layout.activity_qr_code_content);
         content.setText(qrCodeContent);
     }
 }

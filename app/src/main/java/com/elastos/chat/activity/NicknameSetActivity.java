@@ -39,13 +39,17 @@ public class NicknameSetActivity extends BaseActivity {
     }
 
     @Override
+    protected int getContentViewResId() {
+        return R.layout.activity_nickname_set;
+    }
+
+    @Override
     protected void initVariables() {
         nickname = getIntent().getStringExtra(Extra.NICKNAME);
     }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_nickname_set);
         appBar.setRightTextEnable(false);
         input.setText(nickname);
         input.addTextChangedListener(new TextWatcher() {

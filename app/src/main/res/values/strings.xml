@@ -9,4 +9,6 @@
     <string name="change_nickname">更改名字</string>
     <string name="confirm">确定</string>
     <string name="scan_add_friend">扫一扫添加好友</string>
+    <string name="loading">加载中</string>
+
 </resources>

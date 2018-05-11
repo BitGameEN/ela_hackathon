@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
@@ -47,7 +46,12 @@ public class HomeFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         txtAddress = view.findViewById(R.id.home_address);
         txtUserId = view.findViewById(R.id.home_user_id);
         activity = (MainActivity) this.getActivity();
@@ -139,7 +143,14 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-        return view;
+
+        try {
+            String address = Carrier.getInstance().getAddress();
+            String userId = Carrier.getInstance().getUserId();
+            updateInfo(address, userId);
+        } catch (ElastosException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateInfo(String carrierAddr, String carrierUserId) {

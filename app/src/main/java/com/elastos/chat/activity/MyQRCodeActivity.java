@@ -30,6 +30,11 @@ public class MyQRCodeActivity extends BaseActivity {
     }
 
     @Override
+    protected int getContentViewResId() {
+        return R.layout.activity_my_qr_code;
+    }
+
+    @Override
     protected void initVariables() {
         qrCodeContent = getIntent().getStringExtra(Extra.QR_CODE_CONTENT);
     }
@@ -37,7 +42,6 @@ public class MyQRCodeActivity extends BaseActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        setContentView(R.layout.activity_my_qr_code);
         // TODO: 2018/5/9 移到线程中
         Bitmap qrCodeBitmap = QRCodeHelper.createQRCodeBitmap(this, qrCodeContent);
         qrCode.setImageBitmap(qrCodeBitmap);
