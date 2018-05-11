@@ -21,13 +21,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract int getContentViewResId();
 
+    protected boolean needSetupCarrier() {
+        return true;
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         setContentView(getContentViewResId());
         ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
 
-        if (CarrierHelper.isReady) {
+        if (!needSetupCarrier() || CarrierHelper.isReady) {
             initVariables();
             initViews(savedInstanceState);
         } else {
