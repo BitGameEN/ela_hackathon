@@ -75,26 +75,6 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-        txtFriendinfo = view.findViewById(R.id.home_friend_user_id);
-        butGetFriend = view.findViewById(R.id.home_but_get_friend);
-        butGetFriend.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                try {
-                    List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
-                    if (friendInfos.size() > 0) {
-                        for (FriendInfo fi : friendInfos) {
-                            Log.v("", fi.getUserId());
-                            txtFriendinfo.setText(txtFriendinfo.getText() + "|" + fi.getUserId());
-                        }
-                    }
-                } catch (ElastosException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         etPublicMsg = view.findViewById(R.id.home_et_public_msg);
         butPublishMsg = view.findViewById(R.id.home_but_publish_msg);
