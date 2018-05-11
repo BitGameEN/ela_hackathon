@@ -63,7 +63,6 @@ public class FriendsFragment extends BaseFragment {
 
     @Override
     public void onPageFirstStart() {
-        // TODO: 2018/5/8 carrierInst 可能为空
         try {
             List<FriendInfo> friendInfoList = Carrier.getInstance().getFriends();
             Items items = new Items();

@@ -1,5 +1,11 @@
 package com.elastos.chat.ui.item;
 
+import android.text.TextUtils;
+import android.view.TextureView;
+
+import com.elastos.chat.MyApplication;
+import com.elastos.chat.R;
+
 import org.elastos.carrier.FriendInfo;
 
 /**
@@ -10,6 +16,14 @@ public class FriendItemViewModel {
 
     public FriendItemViewModel(FriendInfo friendInfo) {
         this.friendInfo = friendInfo;
+    }
+
+    public String getUserName() {
+        if (TextUtils.isEmpty(friendInfo.getName())) {
+            return MyApplication.getContext().getString(R.string.default_friend_user_name);
+        } else {
+            return friendInfo.getName();
+        }
     }
 
     public String getUserId() {
