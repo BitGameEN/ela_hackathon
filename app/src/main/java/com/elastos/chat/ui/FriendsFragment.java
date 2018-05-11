@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.elastos.chat.R;
+import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.adapter.BaseTypeAdapter;
 import com.elastos.chat.ui.item.FriendItemViewBinder;
 import com.elastos.chat.ui.item.FriendItemViewModel;
@@ -32,6 +36,8 @@ public class FriendsFragment extends BaseFragment {
     @BindView(R.id.recyclerview) RecyclerView recyclerView;
 
     private BaseTypeAdapter adapter;
+    private EditText etFriendAddress;
+    private Button butAddFriend;
 
     public static FriendsFragment newInstance() {
         FriendsFragment meFragment = new FriendsFragment();
@@ -50,6 +56,29 @@ public class FriendsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupRecyclerView();
+
+        etFriendAddress = view.findViewById(R.id.home_et_friend_address);
+        butAddFriend = view.findViewById(R.id.home_but_add_friend);
+        butAddFriend.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                final String friendadd = etFriendAddress.getText().toString();
+                if (!friendadd.equals("")) {
+                    try {
+                        Log.v("", "向" + friendadd + "发送好友申请");
+                        String selfAddr = Carrier.getInstance().getAddress();
+                        Carrier.getInstance().addFriend(friendadd, selfAddr);
+                        SharedPreferencesHelper.put(Carrier.getIdFromAddress(friendadd), friendadd);
+                        ToastUtils.shortT("添加好友成功");
+                    } catch (ElastosException e) {
+                        e.printStackTrace();
+                        ToastUtils.shortT("添加好友失败");
+                    }
+                }
+            }
+        });
     }
 
     public void setupRecyclerView() {

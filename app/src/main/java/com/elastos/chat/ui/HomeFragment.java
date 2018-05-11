@@ -26,10 +26,7 @@ import java.util.List;
  */
 public class HomeFragment extends BaseFragment {
 
-    private MainActivity activity;
-    private Button butAddFriend;
     private Button butPublishMsg;
-    private EditText etFriendAddress;
     private EditText etPublicMsg;
 
     public static HomeFragment newInstance() {
@@ -46,29 +43,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity = (MainActivity) this.getActivity();
-        etFriendAddress = view.findViewById(R.id.home_et_friend_address);
-        butAddFriend = view.findViewById(R.id.home_but_add_friend);
-        butAddFriend.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                final String friendadd = etFriendAddress.getText().toString();
-                if (!friendadd.equals("")) {
-                    try {
-                        Log.v("", "向" + friendadd + "发送好友申请");
-                        String selfAddr = Carrier.getInstance().getAddress();
-                        Carrier.getInstance().addFriend(friendadd, selfAddr);
-                        SharedPreferencesHelper.put(Carrier.getIdFromAddress(friendadd), friendadd);
-                        ToastUtils.shortT("添加好友成功");
-                    } catch (ElastosException e) {
-                        e.printStackTrace();
-                        ToastUtils.shortT("添加好友失败");
-                    }
-                }
-            }
-        });
 
         etPublicMsg = view.findViewById(R.id.home_et_public_msg);
         butPublishMsg = view.findViewById(R.id.home_but_publish_msg);
