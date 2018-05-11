@@ -9,4 +9,5 @@ public final class Extra {
     public static final String SEND_MESSAGE_FRIENDID = "send_message_friendid";
     public static final String NICKNAME = "nickname";
     public static final String MY_ADDRESS = "my_address";
+    public static final String USER_ID = "user_id";
 }

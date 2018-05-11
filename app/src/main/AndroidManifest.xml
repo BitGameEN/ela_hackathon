@@ -38,7 +38,7 @@
             android:name=".activity.QRCodeContentActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MyAddressShowActivity"
+            android:name=".activity.UserIdActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.PublishMessageActivity"
