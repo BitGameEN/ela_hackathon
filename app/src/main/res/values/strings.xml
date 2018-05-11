@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ela_hackathon</string>
+    <string name="app_name">Flash Message</string>
 
     <string name="me">我</string>
     <string name="friends">好友列表</string>
