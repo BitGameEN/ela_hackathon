@@ -4,28 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.elastos.chat.R;
-import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.activity.MyAddressShowActivity;
 import com.elastos.chat.activity.MyQRCodeActivity;
 import com.elastos.chat.activity.NicknameSetActivity;
+import com.elastos.chat.activity.PublishMessageActivity;
 import com.elastos.chat.activity.ScanQRCodeActivity;
 import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.ProfileItemView;
-import com.elastos.chat.util.ToastUtils;
 
 import org.elastos.carrier.Carrier;
-import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
-
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -46,9 +39,8 @@ public class MeFragment extends BaseFragment {
     ProfileItemView nickname;
     @BindView(R.id.scan)
     ProfileItemView scan;
-
-    private Button butPublishMsg;
-    private EditText etPublicMsg;
+    @BindView(R.id.publish_message)
+    ProfileItemView publishMessage;
 
     public static MeFragment newInstance() {
         MeFragment meFragment = new MeFragment();
@@ -64,34 +56,6 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        etPublicMsg = view.findViewById(R.id.home_et_public_msg);
-        butPublishMsg = view.findViewById(R.id.home_but_publish_msg);
-        butPublishMsg.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                SharedPreferencesHelper.put("public_message", etPublicMsg.getText().toString());
-                String msg = SharedPreferencesHelper.get("public_message");
-                Log.v("", msg);
-                if (!msg.trim().isEmpty()) {
-                    try {
-                        List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
-                        if (friendInfos.size() > 0) {
-                            for (FriendInfo fi : friendInfos) {
-                                Log.v("", fi.getUserId());
-                                Carrier.getInstance().sendFriendMessage(fi.getUserId(), msg);
-                            }
-                        }
-                        ToastUtils.shortT("发布消息成功");
-                    } catch (ElastosException e) {
-                        e.printStackTrace();
-                        ToastUtils.shortT("发布消息失败");
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -124,6 +88,12 @@ public class MeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 ScanQRCodeActivity.start(getContext());
+            }
+        });
+        publishMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PublishMessageActivity.start(getContext());
             }
         });
 

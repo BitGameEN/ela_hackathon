@@ -36,25 +36,10 @@
         android:layout_height="50dp"
         app:name="@string/scan_add_friend"/>
 
-    <LinearLayout
+    <com.elastos.chat.ui.view.ProfileItemView
+        android:id="@+id/publish_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
-
-        <EditText
-            android:id="@+id/home_et_public_msg"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="enter your public mesage"
-            android:inputType="text" />
-
-        <Button
-            android:id="@+id/home_but_publish_msg"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="发布消息" />
-    </LinearLayout>
+        android:layout_height="50dp"
+        app:name="@string/public_message"/>
 
 </LinearLayout>

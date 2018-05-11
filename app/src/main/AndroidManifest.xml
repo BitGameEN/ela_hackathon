@@ -40,6 +40,9 @@
         <activity
             android:name=".activity.MyAddressShowActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.PublishMessageActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
