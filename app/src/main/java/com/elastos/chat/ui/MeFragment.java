@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elastos.chat.R;
+import com.elastos.chat.activity.AddressActivity;
 import com.elastos.chat.activity.MyAddressShowActivity;
 import com.elastos.chat.activity.MyQRCodeActivity;
 import com.elastos.chat.activity.NicknameSetActivity;
@@ -105,7 +106,7 @@ public class MeFragment extends BaseFragment {
             myAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(MyAddressShowActivity.getStartIntent(getContext(), myAddress.getDesc()));
+                    AddressActivity.start(getContext(), myAddress.getDesc());
                 }
             });
             myUserId.setOnClickListener(new View.OnClickListener() {

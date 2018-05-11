@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <com.elastos.chat.ui.view.AppBar
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/appbar_height"
+        app:title="我的地址"/>
+
+    <TextView
+        android:id="@+id/my_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        tools:text="ajldkfsajdlkfjklafljdjkalsdfjklkl"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="您的用户地址，其他用户可以通过此地址加您好友(支持长按复制)"/>
+
+</LinearLayout>
