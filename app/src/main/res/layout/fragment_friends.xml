@@ -7,22 +7,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp">
 
         <EditText
             android:id="@+id/home_et_friend_address"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="add friend address" />
+            android:hint="add friend address"
+            android:inputType="textPersonName"/>
 
         <Button
             android:id="@+id/home_but_add_friend"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="添加好友" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="添加好友"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
