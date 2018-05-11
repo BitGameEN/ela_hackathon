@@ -3,6 +3,7 @@ package com.elastos.chat.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.journeyapps.barcodescanner.CompoundBarcodeView;
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.exceptions.ElastosException;
 
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,7 +69,12 @@ public class ScanQRCodeActivity extends BaseActivity {
                         finish();
                     } catch (ElastosException e) {
                         e.printStackTrace();
-                        QRCodeContentActivity.start(ScanQRCodeActivity.this,result.toString());
+                        Log.d("aa", "errorCode："+e.getErrorCode());
+                        if (e.getErrorCode() == -2130706420) {
+                            ToastUtils.shortT("你们已经是好友了");
+                        } else {
+                            QRCodeContentActivity.start(ScanQRCodeActivity.this,result.toString());
+                        }
                         finish();
                     }
                 }
