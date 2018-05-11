@@ -32,10 +32,8 @@ public class HomeFragment extends BaseFragment {
     private MainActivity activity;
     private Button butAddFriend;
     private Button butGetFriend;
-    private Button butDelFriend;
     private Button butPublishMsg;
     private EditText etFriendAddress;
-    private EditText etDelFriendUid;
     private EditText etPublicMsg;
 
     public static HomeFragment newInstance() {
@@ -97,25 +95,7 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-        etDelFriendUid = view.findViewById(R.id.home_et_friend_del_address);
-        butDelFriend = view.findViewById(R.id.home_but_friend_del_uid);
-        butDelFriend.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                try {
-                    String toDelFriendUid = etDelFriendUid.getText().toString().trim();
-                    if (!toDelFriendUid.isEmpty()) {
-                        Carrier.getInstance().removeFriend(etDelFriendUid.getText().toString());
-                        ToastUtils.shortT("删除好友成功");
-                    }
-                } catch (ElastosException e) {
-                    e.printStackTrace();
-                    ToastUtils.shortT("删除好友失败");
-                }
-            }
-        });
         etPublicMsg = view.findViewById(R.id.home_et_public_msg);
         butPublishMsg = view.findViewById(R.id.home_but_publish_msg);
         butPublishMsg.setOnClickListener(new View.OnClickListener() {

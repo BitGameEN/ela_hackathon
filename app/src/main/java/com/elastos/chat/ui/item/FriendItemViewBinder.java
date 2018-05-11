@@ -21,11 +21,20 @@ import me.drakeet.multitype.ItemViewBinder;
  */
 public class FriendItemViewBinder extends ItemViewBinder<FriendItemViewModel, FriendItemViewBinder.ViewHolder> {
 
+    private OnItemLongClickListener onItemLongClickListener;
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, FriendItemViewModel item);
+    }
+
+    public FriendItemViewBinder(OnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
+    }
+
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         ViewHolder viewHolder = new ViewHolder(inflater.inflate(R.layout.item_friend, parent, false));
-
         return viewHolder;
     }
 
@@ -38,6 +47,13 @@ public class FriendItemViewBinder extends ItemViewBinder<FriendItemViewModel, Fr
             public void onClick(View v) {
                 Log.v("", "userId=" + item.getUserId());
                 SendMessageActivity.start(v.getContext(), item.getUserId());
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onItemLongClickListener.onItemLongClick(v,item);
+                return true;
             }
         });
     }

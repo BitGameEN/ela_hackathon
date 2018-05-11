@@ -70,6 +70,12 @@ public class MainActivity extends BaseActivity {
                     carrier.AcceptFriend(userId);
                     SharedPreferencesHelper.put(userId, hello);
                     ToastUtils.shortT("自动添加好友成功");
+                    AndroidUtilities.runOnUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                     ToastUtils.shortT("自动添加好友失败");

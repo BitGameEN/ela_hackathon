@@ -28,4 +28,16 @@ public class BaseTypeAdapter extends MultiTypeAdapter {
         notifyItemRangeInserted(start, dataItems.size());
     }
 
+    public Items getData() {
+        return dataItems;
+    }
+
+    public void removeItem(int index) {
+        if (index < 0 || index >= dataItems.size()) {
+            return;
+        }
+        dataItems.remove(index);
+        notifyItemRemoved(index);
+    }
+
 }
