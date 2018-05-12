@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity {
                         carrier.addFriend(recommendAddr, carrier.getAddress());
                         ToastUtils.shortT("自动添加推荐好友成功");
                     } else {
-//                        BusProvider.getInstance().post(new FriendMessage(fromId, message));
+                        BusProvider.getInstance().post(new FriendMessage(fromId, message));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

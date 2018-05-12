@@ -14,16 +14,21 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
+import com.elastos.chat.activity.MainActivity;
 import com.elastos.chat.adapter.BaseTypeAdapter;
 import com.elastos.chat.ui.item.FriendItemViewBinder;
 import com.elastos.chat.ui.item.FriendItemViewModel;
 import com.elastos.chat.util.ToastUtils;
+import com.elastos.helper.BusProvider;
+import com.squareup.otto.Subscribe;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import me.drakeet.multitype.Items;
@@ -39,6 +44,8 @@ public class FriendsFragment extends BaseFragment {
     private EditText etFriendAddress;
     private Button butAddFriend;
 
+    private Timer timer;
+
     public static FriendsFragment newInstance() {
         FriendsFragment meFragment = new FriendsFragment();
         return meFragment;
@@ -48,7 +55,6 @@ public class FriendsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
-
         return view;
     }
 
@@ -56,6 +62,8 @@ public class FriendsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupRecyclerView();
+
+        BusProvider.getInstance().register(this);
 
         etFriendAddress = view.findViewById(R.id.home_et_friend_address);
         butAddFriend = view.findViewById(R.id.home_but_add_friend);
@@ -94,8 +102,41 @@ public class FriendsFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (timer != null) {
+            timer.cancel();
+        }
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Override
     public void onPageFirstStart() {
+        timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                updateFriendItem();
+            }
+        };
+        //        timer.schedule(timerTask, 0, 1000);
         updateFriendList();
+    }
+
+    private void updateFriendItem() {
+        Items items = adapter.getData();
+        int updateCount = 0;
+        for (Object item : items) {
+            if (!(item instanceof FriendItemViewModel)) {
+                continue;
+            }
+            if (((FriendItemViewModel) item).getTime() > 0) {
+
+            }
+        }
+        if (updateCount > 0) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void showMenu(final FriendItemViewModel itemViewModel) {
@@ -147,5 +188,16 @@ public class FriendsFragment extends BaseFragment {
         } catch (ElastosException e) {
             e.printStackTrace();
         }
+    }
+
+    @Subscribe
+    public void setContent(MainActivity.FriendMessage friendMessage) {
+        int index = getIndex(friendMessage.getsFriendId());
+        if (index < 0) {
+            return;
+        }
+        FriendItemViewModel data = ((FriendItemViewModel) adapter.getData().get(index));
+        data.setMessage(friendMessage.getsMessage());
+        adapter.notifyItemChanged(index);
     }
 }

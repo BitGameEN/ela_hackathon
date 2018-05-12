@@ -31,7 +31,6 @@ public class BaseTypeAdapter extends MultiTypeAdapter {
     public Items getData() {
         return dataItems;
     }
-
     public void removeItem(int index) {
         if (index < 0 || index >= dataItems.size()) {
             return;
