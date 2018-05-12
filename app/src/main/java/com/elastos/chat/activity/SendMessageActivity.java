@@ -1,21 +1,13 @@
 package com.elastos.chat.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.elastos.chat.R;
 import com.elastos.chat.SharedPreferencesHelper;
@@ -23,8 +15,6 @@ import com.elastos.chat.common.Extra;
 import com.elastos.chat.ui.view.AppBar;
 import com.elastos.chat.util.ToastUtils;
 import com.elastos.helper.BusProvider;
-import com.elastos.helper.QRCodeHelper;
-import com.journeyapps.barcodescanner.CompoundBarcodeView;
 import com.squareup.otto.Subscribe;
 
 import org.elastos.carrier.Carrier;
@@ -61,7 +51,7 @@ public class SendMessageActivity extends BaseActivity {
     }
 
     public void updateFriendMessage(String sFromId, String sMessage) {
-        if(FriendID.equals(sFromId)) {
+        if (FriendID.equals(sFromId)) {
             tvFriendMessage.setText(sMessage);
         }
     }
@@ -74,7 +64,7 @@ public class SendMessageActivity extends BaseActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
-        tvFriendid.setText("FriendID:"+FriendID);
+        tvFriendid.setText("FriendID:" + FriendID);
         appBar.setTitle(FriendID);
         butSendMyMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +72,8 @@ public class SendMessageActivity extends BaseActivity {
 
                 try {
                     String toSendMsg = edSendMessage.getText().toString().trim();
-                    if(! toSendMsg.isEmpty()){
-                        Log.v("",FriendID+"  "+edSendMessage.getText());
+                    if (!toSendMsg.isEmpty()) {
+                        Log.v("", FriendID + "  " + edSendMessage.getText());
                         Carrier.getInstance().sendFriendMessage(FriendID, String.valueOf(edSendMessage.getText()));
                         ToastUtils.shortT("发送消息成功");
                     }
@@ -98,14 +88,14 @@ public class SendMessageActivity extends BaseActivity {
             public void onClick(View v) {
 
                 try {
-                    Log.v("",FriendID+" recommended");
+                    Log.v("", FriendID + " recommended");
                     String recommendAddr = SharedPreferencesHelper.get(FriendID);
                     List<FriendInfo> friendInfos = Carrier.getInstance().getFriends();
-                    if(friendInfos.size()>0) {
-                        for (FriendInfo fi:friendInfos) {
-                            if(fi.getUserId() != FriendID){
+                    if (friendInfos.size() > 0) {
+                        for (FriendInfo fi : friendInfos) {
+                            if (!fi.getUserId().equals(FriendID)) {
                                 Log.v("", fi.getUserId());
-                                Carrier.getInstance().sendFriendMessage(fi.getUserId(), "{recommend}:"+recommendAddr);
+                                Carrier.getInstance().sendFriendMessage(fi.getUserId(), "{recommend}:" + recommendAddr);
                             }
                         }
                     }
@@ -124,11 +114,13 @@ public class SendMessageActivity extends BaseActivity {
         //注册到bus事件总线中
         BusProvider.getInstance().register(this);
     }
+
     @Override
     public void onStop() {
         super.onStop();
         BusProvider.getInstance().unregister(this);
     }
+
     /**
      * 定义订阅者，Activity中发布的消息，在此处会接收到，在此之前需要先在程序中register，看
      * 上面的onStart和onStop函数
@@ -136,7 +128,7 @@ public class SendMessageActivity extends BaseActivity {
     @Subscribe
     public void setContent(MainActivity.FriendMessage data) {
         tvFriendMessage.setText(data.getsFriendId());
-        if(data.getsFriendId().equals(FriendID)){
+        if (data.getsFriendId().equals(FriendID)) {
             tvFriendMessage.setText(data.getsMessage());
         }
     }
