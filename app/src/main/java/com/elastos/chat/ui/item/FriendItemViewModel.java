@@ -1,7 +1,6 @@
 package com.elastos.chat.ui.item;
 
 import android.text.TextUtils;
-import android.view.TextureView;
 
 import com.elastos.chat.MyApplication;
 import com.elastos.chat.R;
@@ -40,6 +39,14 @@ public class FriendItemViewModel {
         } else {
             return "[离线]";
         }
+    }
+
+    public void setConnectStatus(ConnectionStatus connectStatus) {
+        friendInfo.setConnectionStatus(connectStatus);
+    }
+
+    public void setFriendInfo(FriendInfo friendInfo) {
+        this.friendInfo = friendInfo;
     }
 
     public int getTime() {

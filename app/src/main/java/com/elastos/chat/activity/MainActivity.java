@@ -2,6 +2,7 @@ package com.elastos.chat.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
@@ -43,7 +44,7 @@ public class MainActivity extends BaseActivity {
     protected void initVariables() {
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), this);
         CarrierHelper.setCallback(new CarrierHelper.CallbackHandler() {
-            public void onFriendConnection(Carrier carrier, String friendId, ConnectionStatus status) {
+            public void onFriendConnection(Carrier carrier, final String friendId, final ConnectionStatus status) {
                 Log.i("call back", "friendid:" + friendId + "connection changed to: " + status);
                 if (status == ConnectionStatus.Connected) {
                     String msg = SharedPreferencesHelper.get("public_message");
@@ -58,7 +59,8 @@ public class MainActivity extends BaseActivity {
                 AndroidUtilities.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                        Fragment fragment = mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS);
+                        ((FriendsFragment) fragment).updateFriendStatus(friendId, status);
                     }
                 });
             }
@@ -78,31 +80,32 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onFriendAdded(Carrier carrier, FriendInfo info) {
+            public void onFriendAdded(Carrier carrier, final FriendInfo info) {
                 AndroidUtilities.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).addFriend(info);
                     }
                 });
             }
 
             @Override
-            public void onFriendRemoved(Carrier carrier, String friendId) {
+            public void onFriendRemoved(Carrier carrier, final String friendId) {
                 AndroidUtilities.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).removeFriend(friendId);
                     }
                 });
             }
 
             @Override
-            public void onFriendInfoChanged(Carrier carrier, String friendId, FriendInfo info) {
+            public void onFriendInfoChanged(Carrier carrier, final String friendId, final FriendInfo info) {
                 AndroidUtilities.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                        Fragment fragment = mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS);
+                        ((FriendsFragment) fragment).updateFriendInfo(friendId, info);
                     }
                 });
             }

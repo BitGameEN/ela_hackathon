@@ -24,6 +24,7 @@ import com.elastos.helper.BusProvider;
 import com.squareup.otto.Subscribe;
 
 import org.elastos.carrier.Carrier;
+import org.elastos.carrier.ConnectionStatus;
 import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 
@@ -196,7 +197,7 @@ public class FriendsFragment extends BaseFragment {
         return -1;
     }
 
-    public void updateFriendList() {
+    private void updateFriendList() {
         if (!isAdded()) {
             return;
         }
@@ -210,6 +211,50 @@ public class FriendsFragment extends BaseFragment {
         } catch (ElastosException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateFriendStatus(String friendId, ConnectionStatus status) {
+        if (!isAdded()) {
+            return;
+        }
+        int index = getIndex(friendId);
+        if (index < 0) {
+            return;
+        }
+        ((FriendItemViewModel) adapter.getData().get(index)).setConnectStatus(status);
+        adapter.notifyItemChanged(index);
+    }
+
+    public void addFriend(FriendInfo info) {
+        if (!isAdded()) {
+            return;
+        }
+        Items items = new Items();
+        items.add(new FriendItemViewModel(info));
+        adapter.addData(items);
+    }
+
+    public void removeFriend(String friendId) {
+        if (!isAdded()) {
+            return;
+        }
+        int index = getIndex(friendId);
+        if (index < 0) {
+            return;
+        }
+        adapter.removeItem(index);
+    }
+
+    public void updateFriendInfo(String friendId, FriendInfo info) {
+        if (!isAdded()) {
+            return;
+        }
+        int index = getIndex(friendId);
+        if (index < 0) {
+            return;
+        }
+        ((FriendItemViewModel) adapter.getData().get(index)).setFriendInfo(info);
+        adapter.notifyItemChanged(index);
     }
 
     @Subscribe
