@@ -104,6 +104,7 @@ public class MainActivity extends BaseActivity {
                     Log.i("call back", "userId:" + fromId + "message: " + message);
                     if (message.startsWith("{recommend}:")) {
                         String recommendAddr = message.substring(12);
+                        Log.v("", recommendAddr);
                         carrier.addFriend(recommendAddr, carrier.getAddress());
                         ToastUtils.shortT("自动添加推荐好友成功");
                     } else {
@@ -112,6 +113,7 @@ public class MainActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (message.startsWith("{recommend}:")) {
+                        Log.e("", "recommendAddr="+message.substring(12)+", error="+e.getMessage().toString());
                         ToastUtils.shortT("自动添加推荐好友失败");
                     }
                 }
