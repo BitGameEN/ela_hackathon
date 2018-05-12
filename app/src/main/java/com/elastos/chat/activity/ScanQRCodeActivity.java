@@ -64,7 +64,8 @@ public class ScanQRCodeActivity extends BaseActivity {
                     ToastUtils.shortT("没有发现二维码");
                 } else {
                     try {
-                        Carrier.getInstance().addFriend(result.toString(),"hello");
+                        String selfAddr = Carrier.getInstance().getAddress();
+                        Carrier.getInstance().addFriend(result.toString(),selfAddr);
                         ToastUtils.shortT("添加好友成功");
                         finish();
                     } catch (ElastosException e) {
