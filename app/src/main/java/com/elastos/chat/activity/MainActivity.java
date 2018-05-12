@@ -16,6 +16,7 @@ import com.elastos.helper.CarrierHelper;
 
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.ConnectionStatus;
+import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.UserInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 
@@ -70,16 +71,30 @@ public class MainActivity extends BaseActivity {
                     carrier.AcceptFriend(userId);
                     SharedPreferencesHelper.put(userId, hello);
                     ToastUtils.shortT("自动添加好友成功");
-                    AndroidUtilities.runOnUIThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
-                        }
-                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                     ToastUtils.shortT("自动添加好友失败");
                 }
+            }
+
+            @Override
+            public void onFriendAdded(Carrier carrier, FriendInfo info) {
+                AndroidUtilities.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                    }
+                });
+            }
+
+            @Override
+            public void onFriendRemoved(Carrier carrier, String friendId) {
+                AndroidUtilities.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                    }
+                });
             }
 
             @Override

@@ -197,6 +197,9 @@ public class FriendsFragment extends BaseFragment {
     }
 
     public void updateFriendList() {
+        if (isAdded()) {
+            return;
+        }
         try {
             List<FriendInfo> friendInfoList = Carrier.getInstance().getFriends();
             Items items = new Items();
