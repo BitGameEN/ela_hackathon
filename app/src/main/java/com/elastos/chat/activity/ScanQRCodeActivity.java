@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.elastos.chat.R;
+import com.elastos.chat.SharedPreferencesHelper;
 import com.elastos.chat.ui.view.AppBar;
 import com.elastos.chat.util.ToastUtils;
 import com.google.zxing.BarcodeFormat;
@@ -65,6 +66,7 @@ public class ScanQRCodeActivity extends BaseActivity {
                 } else {
                     try {
                         String selfAddr = Carrier.getInstance().getAddress();
+                        SharedPreferencesHelper.put(Carrier.getIdFromAddress(result.toString()), result.toString());
                         Carrier.getInstance().addFriend(result.toString(),selfAddr);
                         ToastUtils.shortT("添加好友成功");
                         finish();
