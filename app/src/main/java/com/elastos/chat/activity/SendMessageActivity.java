@@ -95,7 +95,10 @@ public class SendMessageActivity extends BaseActivity {
                         for (FriendInfo fi : friendInfos) {
                             if (!fi.getUserId().equals(FriendID)) {
                                 Log.v("", fi.getUserId());
-                                Carrier.getInstance().sendFriendMessage(fi.getUserId(), "{recommend}:" + recommendAddr);
+                                try {
+                                    Carrier.getInstance().sendFriendMessage(fi.getUserId(), "{recommend}:" + recommendAddr);
+                                } catch (ElastosException e) {
+                                }
                             }
                         }
                     }
