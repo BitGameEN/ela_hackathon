@@ -18,6 +18,7 @@ import com.elastos.chat.activity.MainActivity;
 import com.elastos.chat.adapter.BaseTypeAdapter;
 import com.elastos.chat.ui.item.FriendItemViewBinder;
 import com.elastos.chat.ui.item.FriendItemViewModel;
+import com.elastos.chat.util.AndroidUtilities;
 import com.elastos.chat.util.ToastUtils;
 import com.elastos.helper.BusProvider;
 import com.squareup.otto.Subscribe;
@@ -26,6 +27,7 @@ import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,6 +39,8 @@ import me.drakeet.multitype.Items;
  * @author rczhang on 2018/05/08.
  */
 public class FriendsFragment extends BaseFragment {
+
+    public static int DISAPPEAR_SECOND_TIME = 5;
 
     @BindView(R.id.recyclerview) RecyclerView recyclerView;
 
@@ -119,23 +123,38 @@ public class FriendsFragment extends BaseFragment {
                 updateFriendItem();
             }
         };
-        //        timer.schedule(timerTask, 0, 1000);
+        timer.schedule(timerTask, 0, 1000);
         updateFriendList();
     }
 
     private void updateFriendItem() {
         Items items = adapter.getData();
-        int updateCount = 0;
-        for (Object item : items) {
+        final List<Integer> updatePositionList = new ArrayList<>();
+
+        for (int i = 0; i < items.size(); i++) {
+            Object item = items.get(i);
             if (!(item instanceof FriendItemViewModel)) {
                 continue;
             }
-            if (((FriendItemViewModel) item).getTime() > 0) {
-
+            FriendItemViewModel friendItemViewModel = (FriendItemViewModel) item;
+            if (friendItemViewModel.getTime() <= 0) {
+                continue;
+            }
+            friendItemViewModel.setTime(friendItemViewModel.getTime() - 1);
+            if (friendItemViewModel.getTime() <= 0) {
+                updatePositionList.add(i);
+                friendItemViewModel.setMessage(null);
             }
         }
-        if (updateCount > 0) {
-            adapter.notifyDataSetChanged();
+        if (updatePositionList.size() > 0) {
+            AndroidUtilities.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (Integer integer : updatePositionList) {
+                        adapter.notifyItemChanged(integer);
+                    }
+                }
+            });
         }
     }
 
@@ -191,13 +210,14 @@ public class FriendsFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void setContent(MainActivity.FriendMessage friendMessage) {
+    public void onMessageEvent(MainActivity.FriendMessage friendMessage) {
         int index = getIndex(friendMessage.getsFriendId());
         if (index < 0) {
             return;
         }
         FriendItemViewModel data = ((FriendItemViewModel) adapter.getData().get(index));
         data.setMessage(friendMessage.getsMessage());
+        data.setTime(DISAPPEAR_SECOND_TIME);
         adapter.notifyItemChanged(index);
     }
 }
