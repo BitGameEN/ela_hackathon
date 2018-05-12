@@ -9,7 +9,13 @@ import org.elastos.carrier.ConnectionStatus;
 import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.Log;
 import org.elastos.carrier.UserInfo;
-import org.elastos.carrier.session.*;
+import org.elastos.carrier.session.AbstractStreamHandler;
+import org.elastos.carrier.session.Manager;
+import org.elastos.carrier.session.Session;
+import org.elastos.carrier.session.SessionRequestCompleteHandler;
+import org.elastos.carrier.session.Stream;
+import org.elastos.carrier.session.StreamState;
+import org.elastos.carrier.session.StreamType;
 
 /**
  * @author rczhang on 2018/05/10.
@@ -79,7 +85,7 @@ public class CarrierHelper {
         public void onFriendAdded(Carrier carrier, FriendInfo info) {
             Log.d(TAG, "onFriendAdded");
             if (callback != null) {
-                callback.onFriendAdded(carrier,info);
+                callback.onFriendAdded(carrier, info);
             }
         }
 
@@ -87,13 +93,20 @@ public class CarrierHelper {
         public void onFriendRemoved(Carrier carrier, String friendId) {
             Log.d(TAG, "onFriendRemoved");
             if (callback != null) {
-                callback.onFriendRemoved(carrier,friendId);
+                callback.onFriendRemoved(carrier, friendId);
             }
         }
 
         public void onFriendRequest(Carrier carrier, String userId, UserInfo info, String hello) {
             if (callback != null) {
                 callback.onFriendRequest(carrier, userId, info, hello);
+            }
+        }
+
+        @Override
+        public void onFriendInfoChanged(Carrier carrier, String friendId, FriendInfo info) {
+            if (callback != null) {
+                callback.onFriendInfoChanged(carrier, friendId, info);
             }
         }
 
@@ -149,7 +162,7 @@ public class CarrierHelper {
         try {
             Session session = sessionMgr.newSession(toUid);
             TestStreamHandler streamHandler = new TestStreamHandler();
-            Stream  stream = session.addStream(StreamType.Text, 0, streamHandler);
+            Stream stream = session.addStream(StreamType.Text, 0, streamHandler);
             streamHandler.synch.await();
             TestSessionRequestCompleteHandler reqCompleteHandler = new TestSessionRequestCompleteHandler();
             session.request(reqCompleteHandler);
@@ -164,11 +177,10 @@ public class CarrierHelper {
 
             session.removeStream(stream);
             session.close();
-        }  catch (org.elastos.carrier.exceptions.ElastosException e) {
+        } catch (org.elastos.carrier.exceptions.ElastosException e) {
             Log.e(TAG, "error: " + e.getErrorCode());
             e.printStackTrace();
         }
-
     }
 
     private static String getAppPath() {

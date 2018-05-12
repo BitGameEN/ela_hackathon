@@ -98,6 +98,16 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
+            public void onFriendInfoChanged(Carrier carrier, String friendId, FriendInfo info) {
+                AndroidUtilities.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((FriendsFragment) mainFragmentPagerAdapter.getItem(MainFragmentPagerAdapter.FRIENDS)).updateFriendList();
+                    }
+                });
+            }
+
+            @Override
             //3.2 接受好友信息
             public void onFriendMessage(Carrier carrier, String fromId, String message) {
                 try {
