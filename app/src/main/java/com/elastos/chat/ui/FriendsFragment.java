@@ -197,7 +197,7 @@ public class FriendsFragment extends BaseFragment {
     }
 
     public void updateFriendList() {
-        if (isAdded()) {
+        if (!isAdded()) {
             return;
         }
         try {
