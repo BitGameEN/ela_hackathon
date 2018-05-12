@@ -30,5 +30,19 @@
         <item name="android:maxLength">3000</item>
     </style>
 
+    <!--<style name="Theme.ActivityDialogStyle" parent="Theme.AppCompat.Dialog">-->
+        <!--<item name="android:windowBackground">@color/transparent</item>-->
+        <!--<item name="android:windowMinWidthMajor">100%</item>-->
+        <!--<item name="android:windowMinWidthMinor">100%</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+    <!--</style>-->
+
+
+    <style name="Theme.ActivityDialogStyle" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+
 
 </resources>

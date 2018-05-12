@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-<com.elastos.chat.ui.view.AppBar
-    android:id="@+id/message_appbar"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/appbar_height"
-    app:title="通信"/>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/message_firend_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:padding="10dp">
 
     <TextView
-        android:id="@+id/message_firend_send_message"
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="输入内容"
+        android:textColor="@color/text_black"
+        android:textSize="20dp"/>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/message_et_my_send_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/message_but_recommend"
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/message_et_my_send_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="推荐给其他好友" />
-        <Button
-            android:id="@+id/message_but_send_message"
-            android:layout_width="wrap_content"
+            android:maxLines="3"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="发送消息" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="打赏"/>
+
+            <Button
+                android:id="@+id/message_but_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="推荐给其他好友"/>
+
+            <Button
+                android:id="@+id/message_but_send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="发送消息"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
 
 </LinearLayout>
