@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity {
                     if (message.startsWith("{recommend}:")) {
                         String recommendAddr = message.substring(12);
                         Log.v("", recommendAddr);
-                        carrier.addFriend(recommendAddr, carrier.getAddress());
+                        carrier.addFriend(recommendAddr.replace("\b", ""), carrier.getAddress());
                         ToastUtils.shortT("自动添加推荐好友成功");
                     } else {
                         BusProvider.getInstance().post(new FriendMessage(fromId, message));
