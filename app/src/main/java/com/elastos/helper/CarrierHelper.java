@@ -11,6 +11,7 @@ import org.elastos.carrier.Log;
 import org.elastos.carrier.UserInfo;
 import org.elastos.carrier.session.AbstractStreamHandler;
 import org.elastos.carrier.session.Manager;
+import org.elastos.carrier.session.ManagerHandler;
 import org.elastos.carrier.session.Session;
 import org.elastos.carrier.session.SessionRequestCompleteHandler;
 import org.elastos.carrier.session.Stream;
@@ -26,6 +27,11 @@ public class CarrierHelper {
     public static boolean isReady;
     private static TestHandler handler = new TestHandler();
     private static Manager sessionMgr;
+    private static String sessionRequestFrom;
+    private static String sessionRequestSdp;
+    private static Session activeSession;
+    private static Stream  activeStream;
+    private static Synchronizer waitObj;
 
     private static CallbackHandler callback;
 
@@ -34,10 +40,19 @@ public class CarrierHelper {
             @Override
             public void run() {
                 try {
+                    waitObj = new Synchronizer();
                     TestOptions options = new TestOptions(getAppPath());
                     Carrier carrierInst = Carrier.getInstance(options, handler);
                     carrierInst.start(1000);
-                    sessionMgr = Manager.getInstance(carrierInst);
+                    sessionMgr = Manager.getInstance(carrierInst, new ManagerHandler() {
+                        @Override
+                        public void onSessionRequest(Carrier carrier, String from, String sdp) {
+                            sessionRequestFrom = from;
+                            sessionRequestSdp = sdp;
+                            waitObj.wakeup();
+                        }
+                    });
+                    waitObj.wakeup();
                     handler.synch.await();
                 } catch (org.elastos.carrier.exceptions.ElastosException e) {
                     ToastUtils.shortT("Carrier初始化出错了，请退出重进");
@@ -49,7 +64,10 @@ public class CarrierHelper {
 
     public void destroy() {
         if (Carrier.getInstance() != null) {
-            sessionMgr.cleanup();
+            if(sessionMgr != null) {
+                sessionMgr.cleanup();
+                sessionMgr = null;
+            }
             Carrier.getInstance().kill();
         }
     }
@@ -130,13 +148,29 @@ public class CarrierHelper {
             this.stream = stream;
             this.state = state;
             synch.wakeup();
+            try {
+                switch (state) {
+                    case Initialized:
+                        activeSession.replyRequest(0, null);
+                        break;
+                    case TransportReady:
+                        activeSession.start(sessionRequestSdp);
+                        break;
+                    case Connected:
+                        waitObj.wakeup();
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onStreamData(Stream stream, byte[] data) {
             this.stream = stream;
             this.receivedData = data;
-            synch.wakeup();
         }
     }
 
@@ -158,27 +192,38 @@ public class CarrierHelper {
         }
     }
 
-    public void sendDataWithSession(String toUid, byte[] data) {
+    public static void sendDataWithSession(String toUid, byte[] data) {
         try {
             Session session = sessionMgr.newSession(toUid);
             TestStreamHandler streamHandler = new TestStreamHandler();
-            Stream stream = session.addStream(StreamType.Text, 0, streamHandler);
+            Stream stream = session.addStream(StreamType.Text, Stream.PROPERTY_RELIABLE, streamHandler);
             streamHandler.synch.await();
             TestSessionRequestCompleteHandler reqCompleteHandler = new TestSessionRequestCompleteHandler();
             session.request(reqCompleteHandler);
             streamHandler.synch.await();
+            waitObj.await();
+            Carrier.getInstance().sendFriendMessage(toUid, "MSG_REPLY_SESSION_REQUST_AND_START");
             reqCompleteHandler.synch.await();
             session.start(reqCompleteHandler.sdp);
             streamHandler.synch.await();
             streamHandler.synch.await();
 
             stream.writeData(data);
-            streamHandler.synch.await();
 
             session.removeStream(stream);
             session.close();
         } catch (org.elastos.carrier.exceptions.ElastosException e) {
             Log.e(TAG, "error: " + e.getErrorCode());
+            e.printStackTrace();
+        }
+    }
+
+    public static void replySessionRequestAndStart() {
+        try {
+            activeSession = sessionMgr.newSession(sessionRequestFrom);
+            TestStreamHandler streamHandler = new TestStreamHandler();
+            activeStream = activeSession.addStream(StreamType.Text, Stream.PROPERTY_RELIABLE, streamHandler);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

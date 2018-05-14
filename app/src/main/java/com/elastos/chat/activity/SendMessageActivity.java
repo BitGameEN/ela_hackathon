@@ -20,6 +20,7 @@ import com.elastos.chat.util.ToastUtils;
 import org.elastos.carrier.Carrier;
 import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
+import com.elastos.helper.CarrierHelper;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class SendMessageActivity extends BaseActivity {
 
     @BindView(R.id.message_et_my_send_message) EditText edSendMessage;
     @BindView(R.id.message_but_send_message) Button butSendMyMessage;
+    @BindView(R.id.message_but_send_picture) Button butSendMyPicture;
     @BindView(R.id.message_but_recommend) Button butRecommend;
     @BindView(R.id.reward) Button reward;
     public String FriendID;
@@ -77,6 +79,21 @@ public class SendMessageActivity extends BaseActivity {
                 } catch (ElastosException e) {
                     e.printStackTrace();
                     ToastUtils.shortT("发送消息失败");
+                }
+
+                finish();
+            }
+        });
+        butSendMyPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    byte[] picBytes = {0x1, 0x2, 0x3, 0x4, 0x5};
+                    CarrierHelper.sendDataWithSession(FriendID, picBytes);
+                    ToastUtils.shortT("发送图片成功");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtils.shortT("发送图片失败");
                 }
 
                 finish();

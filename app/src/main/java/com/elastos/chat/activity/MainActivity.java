@@ -120,7 +120,10 @@ public class MainActivity extends BaseActivity {
                         Log.v("", recommendAddr);
                         carrier.addFriend(recommendAddr.replace("\b", ""), carrier.getAddress());
                         ToastUtils.shortT("自动添加推荐好友成功");
-                    } else {
+                    } else if (message.compareTo("MSG_REPLY_SESSION_REQUST_AND_START") == 0) {
+                        CarrierHelper.replySessionRequestAndStart();
+                    }
+                    else {
                         BusProvider.getInstance().post(new FriendMessage(fromId, message));
                     }
                 } catch (Exception e) {
