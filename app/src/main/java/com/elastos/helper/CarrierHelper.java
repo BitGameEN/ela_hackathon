@@ -208,7 +208,24 @@ public class CarrierHelper {
             streamHandler.synch.await();
             streamHandler.synch.await();
 
-            stream.writeData(data);
+            int chunkSize = 2048;
+            byte toSendBytes[] = new byte[chunkSize];
+            int totalBytes = data.length;
+            int rows = (int)Math.ceil((double)totalBytes / chunkSize);
+            ToastUtils.shortT("即将发送" + String.valueOf(totalBytes) + "字节，分" + String.valueOf(rows) + "次");
+            stream.writeData(intToBytes(totalBytes));
+            for (int i = 0; i < rows; i++) {
+                int toSendBytesCount = Math.min(chunkSize, totalBytes - i * chunkSize);
+                if (toSendBytesCount == chunkSize) {
+                    System.arraycopy(data, i * chunkSize, toSendBytes, 0, chunkSize);
+                    stream.writeData(toSendBytes);
+                } else {
+                    byte toSendRestBytes[] = new byte[toSendBytesCount];
+                    System.arraycopy(data, i * chunkSize, toSendRestBytes, 0, toSendBytesCount);
+                    stream.writeData(toSendRestBytes);
+                }
+                ToastUtils.shortT("发送" + String.valueOf(toSendBytesCount) + "字节");
+            }
 
             session.removeStream(stream);
             session.close();

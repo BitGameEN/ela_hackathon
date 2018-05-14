@@ -27,6 +27,7 @@ import android.content.ContentResolver;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 
 import java.util.List;
 
@@ -149,21 +150,15 @@ public class SendMessageActivity extends BaseActivity {
                         try {
                             // 读取
                             byte temp[] = new byte[2048];
-                            byte bytesArray[][] = new byte[4096][2048];
-                            int totalBytes = 0, len = 0, rows = 0;
+                            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                            int len = 0;
                             while ((len = inputStream.read(temp)) > 0){
-                                bytesArray[rows++] = temp;
-                                totalBytes += len;
+                                outStream.write(temp, 0, len);
                             }
                             inputStream.close();
+                            outStream.close();
                             // 发送
-                            ToastUtils.shortT("即将发送" + String.valueOf(totalBytes) + "字节，分" + String.valueOf(rows) + "次");
-                            CarrierHelper.sendDataWithSession(FriendID, CarrierHelper.intToBytes(totalBytes));
-                            for (int i = 0; i < rows; i++) {
-                                byte toSendBytes[] = bytesArray[i];
-                                CarrierHelper.sendDataWithSession(FriendID, toSendBytes);
-                                ToastUtils.shortT("发送" + String.valueOf(toSendBytes.length) + "字节");
-                            }
+                            CarrierHelper.sendDataWithSession(FriendID, outStream.toByteArray());
                             ToastUtils.shortT("发送图片成功");
                         } catch (Exception e) {
                             e.printStackTrace();
