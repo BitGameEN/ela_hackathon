@@ -22,6 +22,12 @@ import org.elastos.carrier.FriendInfo;
 import org.elastos.carrier.exceptions.ElastosException;
 import com.elastos.helper.CarrierHelper;
 
+import android.net.Uri;
+import android.content.ContentResolver;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -88,15 +94,13 @@ public class SendMessageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    byte[] picBytes = {0x1, 0x2, 0x3, 0x4, 0x5};
-                    CarrierHelper.sendDataWithSession(FriendID, picBytes);
-                    ToastUtils.shortT("发送图片成功");
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent, 1);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ToastUtils.shortT("发送图片失败");
                 }
-
-                finish();
             }
         });
         butRecommend.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +134,50 @@ public class SendMessageActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            Log.e("uri", uri.toString());
+            ContentResolver cr = this.getContentResolver();
+            final InputStream inputStream;
+            try {
+                inputStream = cr.openInputStream(uri);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            // 读取
+                            byte temp[] = new byte[2048];
+                            byte bytesArray[][] = new byte[4096][2048];
+                            int totalBytes = 0, len = 0, rows = 0;
+                            while ((len = inputStream.read(temp)) > 0){
+                                bytesArray[rows++] = temp;
+                                totalBytes += len;
+                            }
+                            inputStream.close();
+                            // 发送
+                            ToastUtils.shortT("即将发送" + String.valueOf(totalBytes) + "字节，分" + String.valueOf(rows) + "次");
+                            CarrierHelper.sendDataWithSession(FriendID, CarrierHelper.intToBytes(totalBytes));
+                            for (int i = 0; i < rows; i++) {
+                                byte toSendBytes[] = bytesArray[i];
+                                CarrierHelper.sendDataWithSession(FriendID, toSendBytes);
+                                ToastUtils.shortT("发送" + String.valueOf(toSendBytes.length) + "字节");
+                            }
+                            ToastUtils.shortT("发送图片成功");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            ToastUtils.shortT("发送图片失败");
+                        }
+                    }
+                }).start();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+        finish();
+    }
 
     private void showExpectDialog() {
         new MaterialDialog.Builder(this)
