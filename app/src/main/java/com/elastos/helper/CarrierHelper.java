@@ -192,7 +192,7 @@ public class CarrierHelper {
         }
     }
 
-    public static void sendDataWithSession(String toUid, byte[] data) {
+    public static boolean sendDataWithSession(String toUid, byte[] data) {
         try {
             Session session = sessionMgr.newSession(toUid);
             TestStreamHandler streamHandler = new TestStreamHandler();
@@ -229,9 +229,11 @@ public class CarrierHelper {
 
             session.removeStream(stream);
             session.close();
+            return true;
         } catch (org.elastos.carrier.exceptions.ElastosException e) {
             Log.e(TAG, "error: " + e.getErrorCode());
             e.printStackTrace();
+            return false;
         }
     }
 

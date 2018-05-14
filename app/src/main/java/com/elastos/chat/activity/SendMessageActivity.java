@@ -158,8 +158,11 @@ public class SendMessageActivity extends BaseActivity {
                             inputStream.close();
                             outStream.close();
                             // 发送
-                            CarrierHelper.sendDataWithSession(FriendID, outStream.toByteArray());
-                            ToastUtils.shortT("发送图片成功");
+                            if (CarrierHelper.sendDataWithSession(FriendID, outStream.toByteArray())) {
+                                ToastUtils.shortT("发送图片成功");
+                            }else{
+                                ToastUtils.shortT("发送图片失败");
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             ToastUtils.shortT("发送图片失败");
