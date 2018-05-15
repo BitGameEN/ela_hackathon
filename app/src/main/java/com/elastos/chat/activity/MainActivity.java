@@ -157,9 +157,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (Carrier.getInstance() != null) {
-            Carrier.getInstance().kill();
-        }
+        CarrierHelper.destroy();
     }
 
     @Override
