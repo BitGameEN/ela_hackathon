@@ -62,7 +62,7 @@ public class CarrierHelper {
         }).start();
     }
 
-    public void destroy() {
+    public static void destroy() {
         if (Carrier.getInstance() != null) {
             if(sessionMgr != null) {
                 sessionMgr.cleanup();
@@ -140,8 +140,6 @@ public class CarrierHelper {
         Stream stream;
         StreamState state;
 
-        byte[] receivedData;
-
         @Override
         public void onStateChanged(Stream stream, StreamState state) {
             Log.i(TAG, "Stream " + stream.toString() + "'s state changed to be " + state.name());
@@ -167,10 +165,50 @@ public class CarrierHelper {
             }
         }
 
+        byte[] receivedData = new byte[4096 * 2048];
+        int receivedLen = 0;
+        int toReceiveLen = 0;
+        int receiveStage = 0; // 0 - 获取4字节header阶段，1 - 接收body阶段
+
         @Override
         public void onStreamData(Stream stream, byte[] data) {
             this.stream = stream;
-            this.receivedData = data;
+            int len = receivedLen + data.length;
+            if (receiveStage == 0) {
+                if (len > 4) {
+                    System.arraycopy(data, 0, this.receivedData, receivedLen, 4 - receivedLen);
+                    toReceiveLen = bytesToInt(this.receivedData, 0);
+                    receiveStage = 1;
+                    System.arraycopy(data, 0, this.receivedData, 4 - receivedLen, len - 4);
+                    receivedLen = len - 4;
+                } else {
+                    System.arraycopy(data, 0, this.receivedData, receivedLen, data.length);
+                    receivedLen += data.length;
+                }
+            } else {
+                if (len > toReceiveLen) {
+                    int copyLen = 0, restLen = 0;
+                    copyLen = toReceiveLen - receivedLen;
+                    restLen = len - toReceiveLen;
+                    System.arraycopy(data, 0, this.receivedData, receivedLen, copyLen);
+                    // todo：body数据接收完整，处理数据，然后重置标记
+                    receivedLen = 0;
+                    toReceiveLen = 0;
+                    receiveStage = 0;
+                    if (restLen > 4) {
+                        receivedLen = restLen - 4;
+                        toReceiveLen = bytesToInt(data, copyLen);
+                        receiveStage = 1;
+                        System.arraycopy(data, data.length - restLen + 4, this.receivedData, 0, restLen - 4);
+                    } else {
+                        receivedLen = restLen;
+                        System.arraycopy(data, data.length - restLen, this.receivedData, 0, restLen);
+                    }
+                } else {
+                    System.arraycopy(data, 0, this.receivedData, receivedLen, data.length);
+                    receivedLen += data.length;
+                }
+            }
         }
     }
 

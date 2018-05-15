@@ -57,6 +57,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CarrierHelper.destroy();
+    }
+
+    @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
     }
