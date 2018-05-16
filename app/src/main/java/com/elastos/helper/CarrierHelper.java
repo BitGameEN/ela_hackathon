@@ -172,21 +172,24 @@ public class CarrierHelper {
 
         @Override
         public void onStreamData(Stream stream, byte[] data) {
+            // 需要处理粘包
             this.stream = stream;
             int len = receivedLen + data.length;
             if (receiveStage == 0) {
-                if (len > 4) {
+                if (len >= 4) {
                     System.arraycopy(data, 0, this.receivedData, receivedLen, 4 - receivedLen);
                     toReceiveLen = bytesToInt(this.receivedData, 0);
                     receiveStage = 1;
-                    System.arraycopy(data, 0, this.receivedData, 4 - receivedLen, len - 4);
+                    if (len > 4) {
+                        System.arraycopy(data, 4 - receivedLen, this.receivedData, 0, len - 4);
+                    }
                     receivedLen = len - 4;
                 } else {
                     System.arraycopy(data, 0, this.receivedData, receivedLen, data.length);
                     receivedLen += data.length;
                 }
             } else {
-                if (len > toReceiveLen) {
+                if (len >= toReceiveLen) {
                     int copyLen = 0, restLen = 0;
                     copyLen = toReceiveLen - receivedLen;
                     restLen = len - toReceiveLen;
@@ -202,7 +205,9 @@ public class CarrierHelper {
                         System.arraycopy(data, data.length - restLen + 4, this.receivedData, 0, restLen - 4);
                     } else {
                         receivedLen = restLen;
-                        System.arraycopy(data, data.length - restLen, this.receivedData, 0, restLen);
+                        if (restLen > 0) {
+                            System.arraycopy(data, data.length - restLen, this.receivedData, 0, restLen);
+                        }
                     }
                 } else {
                     System.arraycopy(data, 0, this.receivedData, receivedLen, data.length);
