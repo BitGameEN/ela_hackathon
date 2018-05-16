@@ -86,7 +86,7 @@ public class CarrierHelper {
     }
 
     public static class ExtraCallbackHandler {
-        public void onFriendStreamData(Carrier carrier, byte[] bytes, int len) {
+        public void onFriendStreamData(Carrier carrier, String fromId, byte[] bytes, int len) {
         }
     }
 
@@ -205,7 +205,7 @@ public class CarrierHelper {
                     restLen = len - toReceiveLen;
                     System.arraycopy(data, 0, this.receivedData, receivedLen, copyLen);
                     // body数据已接收完整，处理数据
-                    extra_callback.onFriendStreamData(Carrier.getInstance(), this.receivedData, toReceiveLen);
+                    extra_callback.onFriendStreamData(Carrier.getInstance(), activeSession.getPeer(), this.receivedData, toReceiveLen);
                     // 然后重置标记
                     receivedLen = 0;
                     toReceiveLen = 0;

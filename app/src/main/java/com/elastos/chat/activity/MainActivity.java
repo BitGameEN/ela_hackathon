@@ -137,8 +137,8 @@ public class MainActivity extends BaseActivity {
         });
 
         CarrierHelper.setExtraCallback(new CarrierHelper.ExtraCallbackHandler() {
-            public void onFriendStreamData(Carrier carrier, byte[] bytes, int len) {
-
+            public void onFriendStreamData(Carrier carrier, String fromId, byte[] bytes, int len) {
+                BusProvider.getInstance().post(new FriendStreamData(fromId, bytes, len));
             }
         });
     }
@@ -195,5 +195,25 @@ public class MainActivity extends BaseActivity {
         public void setsMessage(String sMessage) {
             this.sMessage = sMessage;
         }
+    }
+
+    public static class FriendStreamData {
+        private String sFriendId;
+        private byte[] bytes;
+        private int len;
+
+        public FriendStreamData(String sFromID, byte[] bytes, int len) {
+            this.sFriendId = sFromID;
+            this.bytes = bytes;
+            this.len = len;
+        }
+
+        public String getFriendId() {
+            return sFriendId;
+        }
+        public byte[] getBytes() {
+            return bytes;
+        }
+        public int getLen() { return len; }
     }
 }

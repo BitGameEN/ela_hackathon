@@ -1,5 +1,7 @@
 package com.elastos.chat.ui;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.elastos.chat.R;
@@ -44,6 +47,7 @@ public class FriendsFragment extends BaseFragment {
     public static int DISAPPEAR_SECOND_TIME = 5;
 
     @BindView(R.id.recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.imageview) ImageView imageView;
 
     private BaseTypeAdapter adapter;
     private EditText etFriendAddress;
@@ -267,5 +271,14 @@ public class FriendsFragment extends BaseFragment {
         data.setMessage(friendMessage.getsMessage());
         data.setTime(DISAPPEAR_SECOND_TIME);
         adapter.notifyItemChanged(index);
+    }
+
+    @Subscribe
+    public void onMessageEvent(MainActivity.FriendStreamData friendStreamData) {
+        // 目前只支持图片
+        byte[] bytes = friendStreamData.getBytes();
+        int len = friendStreamData.getLen();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, len);
+        imageView.setImageBitmap(bitmap);
     }
 }
