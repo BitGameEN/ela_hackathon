@@ -135,6 +135,12 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        CarrierHelper.setExtraCallback(new CarrierHelper.ExtraCallbackHandler() {
+            public void onFriendStreamData(Carrier carrier, byte[] bytes, int len) {
+
+            }
+        });
     }
 
     @Override

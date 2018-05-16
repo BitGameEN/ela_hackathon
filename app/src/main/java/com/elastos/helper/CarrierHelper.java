@@ -34,6 +34,7 @@ public class CarrierHelper {
     private static Synchronizer waitObj;
 
     private static CallbackHandler callback;
+    private static ExtraCallbackHandler extra_callback;
 
     public static void init() {
         new Thread(new Runnable() {
@@ -78,6 +79,15 @@ public class CarrierHelper {
 
     public static class CallbackHandler extends AbstractCarrierHandler {
 
+    }
+
+    public static void setExtraCallback(ExtraCallbackHandler extra_callback) {
+        CarrierHelper.extra_callback = extra_callback;
+    }
+
+    public static class ExtraCallbackHandler {
+        public void onFriendStreamData(Carrier carrier, byte[] bytes, int len) {
+        }
     }
 
     static class TestHandler extends AbstractCarrierHandler {
@@ -194,7 +204,9 @@ public class CarrierHelper {
                     copyLen = toReceiveLen - receivedLen;
                     restLen = len - toReceiveLen;
                     System.arraycopy(data, 0, this.receivedData, receivedLen, copyLen);
-                    // todo：body数据接收完整，处理数据，然后重置标记
+                    // body数据已接收完整，处理数据
+                    extra_callback.onFriendStreamData(Carrier.getInstance(), this.receivedData, toReceiveLen);
+                    // 然后重置标记
                     receivedLen = 0;
                     toReceiveLen = 0;
                     receiveStage = 0;
